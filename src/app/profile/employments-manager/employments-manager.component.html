@@ -1,0 +1,128 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading">
+    <div class="col">
+        <div class="card bg-transparent border-0">
+            <div class="row">
+                <div class="col col-md-6">
+                    <h3 class="card-title">Empleos publicados (<b>{{ total }}</b>)</h3>
+                </div>
+                <div class="col col-md-3 text-right">
+                    <h4 class="card-title">Página <b>{{page}} / {{ pages }}</b></h4>
+                </div>
+                <div class="col col-md-3 text-right">
+                    <button class="btn btn-info btn-lg text-center" [routerLink]="['/profile/employment-crud/', 'new']">
+                        <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                        Crear empleo</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success btn-lg dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="icon-filter iconos-search"></span>
+                            <span class="sr-only iconos-search">Toggle Dropdown</span>
+                          </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item pointer" (click)="changeFilter(1)">
+                                        Empleos
+                                    </a>
+                                    <a class="dropdown-item pointer" (click)="changeFilter(2)">
+                                        Prácticas profesionales
+                                    </a>
+                                    <a class="dropdown-item pointer" (click)="changeFilter(3)">
+                                        Servicio social
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="ml-2 mt-2">Buscando: <b>{{filter}}</b></h5>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="employments.length === 0" class="text-center">
+                <h2>Sin resultados ...</h2>
+            </div>
+            <div class="table-responsive" *ngIf="employments.length > 0">
+                <table class="table table-hover">
+                    <thead class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Fecha de creación</th>
+                            <th>Estado</th>
+                            <th>Vacantes</th>
+                            <th>Salario</th>
+                            <th>Horario</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="animated fadeInLeft" *ngFor="let employment of employments; let i = index">
+                            <th>{{ (i + 1) + ((page - 1) * 10)}}</th>
+                            <td class="wrapper text-center">
+                                <input class="form-control" [(ngModel)]="employment.name" name="name" placeholder="Nomber del empleo" (keydown.enter)="update(employment)">
+                            </td>
+                            <td>
+                                {{employment.dateCreate | date:'medium'}}
+                            </td>
+
+                            <td>
+                                <div class="custom-control custom-switch text-center">
+                                    <input type="checkbox" [(ngModel)]="employment.state" class="custom-control-input" name="state" id="customSwitch{{i}}">
+                                    <label class="custom-control-label" for="customSwitch{{i}}"> </label>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <input type="number" class="form-control" [(ngModel)]="employment.vacancy_numbers" name="vacancy_numbers" placeholder="Número de vacantes" (keydown.enter)="update(employment)" min="0">
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-warning font-weight-bold" id="employment-salary">$ </span>
+                                    </div>
+                                    <input class="form-control" type="number" [(ngModel)]="employment.salary" name="salary" (keydown.enter)="update(employment)" aria-describedby="employment-salary" min="0">
+                                </div>
+                            </td>
+                            <td class="wrapper text-center">
+                                <input class="form-control" [(ngModel)]="employment.horary" name="horary" (keydown.enter)="update(employment)">
+                            </td>
+                            <td>
+                                <button class="btn btn-success" (click)="update(employment)">
+                                    <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+                                </button>
+
+                                <button class="btn btn-info" [routerLink]="['/profile/employment-crud/', employment._id]">
+                                    <fa-icon [icon]="['fas', 'edit']" size="lg"></fa-icon>
+                                </button>
+
+                                <button class="btn btn-danger" (click)="delete(employment._id)">
+                                    <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="row text-center" *ngIf="!loading && employments.length > 0">
+    <div class="col" *ngIf="from > 0">
+        <button class="btn btn-success btn-lg" (click)="changePagination(-10)">Anteriores</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-info btn-lg" (click)="changePagination(10)">Siguientes</button>
+    </div>
+</div>

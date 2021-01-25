@@ -1,0 +1,13 @@
+.tamanio {
+    width: 75%;
+}
+
+.logo {
+    max-width: 400px;
+}
+
+@media screen and (max-width: 991px) {
+    .tamanio {
+        width: 100%;
+    }
+}

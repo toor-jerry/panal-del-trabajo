@@ -1,0 +1,86 @@
+<h3><b>Usuarios: </b> {{ total }}</h3>
+<div class="row">
+    <div class="col-12">
+        <div class="input-group animated fadeInRight">
+            <input class="form-control form-control-lg ml-0" type="search" placeholder="Buscar ..." aria-label="Buscar" (keydown.enter)="search(buscarVal.value)" #buscarVal>
+            <div class="input-group-append">
+                <button (click)="search(buscarVal.value)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<h3 *ngIf="searchUsers && totalSearch > 0">Resultados de búsqueda (<b>{{ totalSearch }}</b>)</h3>
+<h4 class="text-right" *ngIf="users.length > 0">Página: <b>{{ page + 1 }} / {{ pages }}</b></h4>
+<h2 *ngIf="searchUsers && totalSearch === 0" class="text-center">No se encontrarón coincidencias...</h2>
+
+<div class="table-responsive animated fadeIn" *ngIf="!loading && users.length > 0">
+    <table class="table table-hover table-sm">
+        <tr>
+            <th>#</th>
+            <th>Fotografía</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Auth</th>
+            <th>Estado</th>
+            <th>Rol</th>
+            <th></th>
+        </tr>
+        <tr class="animated fadeInLeft" *ngFor="let user of users; let i = index">
+            <th scope="row">{{ (page * limit) + (i + 1) }}</th>
+            <td>
+                <img (click)="showModal( user._id )" [src]="user.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-70 pointer" alt="{{ user?.name }}">
+            </td>
+            <td class="text-break">{{ user.user }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>
+                <span class="badge badge-success" *ngIf="user.google">Google</span>
+                <span class="badge badge-info" *ngIf="!user.google">Local</span>
+            </td>
+            <td>
+                <div class="custom-control custom-switch text-center">
+                    <input type="checkbox" [(ngModel)]="user.state" class="custom-control-input" name="state" id="customSwitch{{i}}">
+                    <label class="custom-control-label" for="customSwitch{{i}}"> </label>
+                </div>
+            </td>
+            <td>
+                <select [(ngModel)]="user.role" name="role" class="custom-select text-center pointer">
+                        <option value="ADMIN_ROLE">ADMIN_ROLE</option>
+                        <option value="USER_ROLE">USER_ROLE</option>
+                        <option value="ENTERPRISE_ROLE">ENTERPRISE_ROLE</option>
+                        <option value="USER_PLATINO_ROLE">USER_PLATINO_ROLE</option>
+                    </select>
+            </td>
+            <td *ngIf="user._id !== userService.getUserAuth()._id">
+                <button (click)="update(user)" class="btn btn-success">
+                                    <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+                                </button>
+
+                <button class="btn btn-danger" (click)="delete(user)">
+                                    <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                                </button>
+                <button (click)="changePassword(user)" class="btn btn-info">
+                                    <fa-icon [icon]="['fas', 'lock-open']" size="lg"></fa-icon>
+                                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="row text-center" *ngIf="!loading">
+    <div class="col" *ngIf="from > 0">
+        <button class="btn btn-success btn-lg" (click)="changePagination(-10, -1)">Anteriores</button>
+    </div>
+    <div class="col" *ngIf="pages > 0 && (page+1) < pages">
+        <button class="btn btn-info btn-lg" (click)="changePagination(10, 1)">Siguientes</button>
+    </div>
+</div>

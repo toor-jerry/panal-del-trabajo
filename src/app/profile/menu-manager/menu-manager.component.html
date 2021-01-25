@@ -1,0 +1,69 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading && menus.length > 0">
+    <div class="col">
+        <div class="card bg-transparent border-0">
+            <div class="row">
+                <div class="col">
+                    <h3 class="card-title">Menús registrados (<b>{{ menus.length }}</b>)</h3>
+                </div>
+                <div class="col text-right mr-md-1">
+                    <button class="btn btn-info btn-lg text-center" [routerLink]="['/profile/menu', 'new']">
+                        <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                        Agregar menú</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Role</th>
+                            <th>Descripción</th>
+                            <th>
+                                <button class="btn btn-success btn-lg" (click)="sync()"><fa-icon [icon]="['fas', 'sync']" size="lg" class="pointer"></fa-icon></button>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="animated fadeInLeft" *ngFor="let menu of menus; let i = index">
+                            <th>{{ (i + 1) }}</th>
+                            <td>
+                                <select [(ngModel)]="menu.role" name="role" class="custom-select text-center pointer">
+                                        <option value="ADMIN_ROLE">ADMIN_ROLE</option>
+                                        <option value="USER_ROLE">USER_ROLE</option>
+                                        <option value="ENTERPRISE_ROLE">ENTERPRISE_ROLE</option>
+                                        <option value="USER_PLATINO_ROLE">USER_PLATINO_ROLE</option>
+                                    </select>
+                            </td>
+                            <td class="wrapper text-center">
+                                <input class="form-control" [(ngModel)]="menu.description" name="description" (keydown.enter)="update(menu)">
+                            </td>
+                            <td>
+                                <button class="btn btn-secondary" (click)="update(menu)">
+                                    <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+                                </button>
+
+                                <button class="btn btn-info" [routerLink]="['/profile/menu', menu._id]">
+                                    <fa-icon [icon]="['fas', 'edit']" size="lg"></fa-icon>
+                                </button>
+
+                                <button class="btn btn-danger" (click)="delete(menu._id)">
+                                    <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

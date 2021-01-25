@@ -1,0 +1,18 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+<div *ngIf="!loading">
+    <div class="card-deck">
+        <app-contact-card [user]="contact" [index]="contact._id" (contactsNews)="newsContacts($event)" *ngFor="let contact of contacts">
+        </app-contact-card>
+        <app-contact-card [user]="contact" [type]="'CHAT'" [index]="contact._id" (contactsOnChatNews)="newsContactsOnChat($event)" *ngFor="let contact of contactsOnChat">
+        </app-contact-card>
+    </div>
+    <div class="alert alert-danger text-center" role="alert" *ngIf="contacts.length === 0 && contactsOnChat.length === 0">
+        <h4>No cuenta con contactos...</h4>
+        <h6>Diríjase a la sección <a [routerLink]="['/profile/users']" class="alert-link">Usuarios</a> para agregarlos a sus contactos.</h6>
+    </div>
+</div>

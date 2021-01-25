@@ -1,0 +1,23 @@
+<nav aria-label="breadcrumb bg-secondary">
+
+    <ol class="breadcrumb animated fadeInDown" id="breadCrumb">
+
+        <li class="breadcrumb-item">
+            <a [routerLink]="['/profile/home']" routerLinkActive="router-link-active">
+            Home
+          </a>
+        </li>
+
+        <li class="breadcrumb-item" *ngFor="let label of afterLabels">
+            <a [routerLink]="[label.rute]" routerLinkActive="router-link-active">
+            {{label.title}}
+          </a>
+        </li>
+
+        <li class="breadcrumb-item active" aria-current="page">
+            {{label}}
+        </li>
+
+    </ol>
+
+</nav>

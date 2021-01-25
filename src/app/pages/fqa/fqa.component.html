@@ -1,0 +1,108 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading" id="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div class="conatiner bg-white shadow-lg rounded animated fadeIn p-1 p-md-5 mb-5">
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <h3><b>Total: </b> {{ total }}</h3>
+        </div>
+        <div class="col">
+            <form class="form-inline animated fadeInRight float-right">
+                <div class="input-group">
+                    <input class="form-control form-control-lg ml-0" type="search" placeholder="Buscar preguntas" aria-label="Buscar" (keydown.enter)="searchFQA(buscarVal.value)" #buscarVal>
+                    <div class="input-group-append">
+                        <button (click)="searchFQA(buscarVal.value)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <button (click)="addQuestion()" type="button" class="btn btn-info btn-block" *ngIf="auth && user.role !== 'USER_ROLE'">
+                <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                Formular una pregunta
+            </button>
+        </div>
+        <div class="col">
+            <h4 class="text-right" *ngIf="total > 0">Página: <b>{{ page +1 }} / {{ pages }}</b></h4>
+            <h2 class="text-center" *ngIf="total === 0">No se encontrarón preguntas...</h2>
+        </div>
+    </div>
+    <hr>
+
+
+    <div *ngIf="!loading">
+        <ul class="list-group list-group-flush" *ngIf="total > 0">
+
+            <li class="list-group-item text-justify li_hover" *ngFor="let question of questions; let i = index">
+
+                <p class="font-weight-bold pointer" data-toggle="collapse" attr.href="#fqaCollapse{{i}}" role="button" aria-expanded="false" attr.aria-controls="fqaCollapse{{i}}" (click)="getAnswers(question)">
+                    {{ i+1 }}.- {{ question.question }}
+                    <small>{{ question?.user?.name }} {{ question?.user?.last_name }} | {{ question?.user?.user }} {{ question?.user?.email }} {{ question.createAt | date:'medium' }}
+                    </small>
+                </p>
+                <button class="btn btn-info float-right" (click)="updateQuestion(question)" *ngIf="user._id === question.user?._id || user.role === 'ADMIN_ROLE'">
+                    <fa-icon [icon]="['fas', 'edit']" size="lg"></fa-icon>
+                </button>
+
+                <button class="btn btn-danger float-right" (click)="deleteQuestion(question)" *ngIf="user._id === question.user?._id || user.role === 'ADMIN_ROLE'">
+                    <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                </button>
+
+                <div class="collapse" id="fqaCollapse{{i}}">
+                    <div class="card card-body animated fadeIn">
+                        <div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="question.loading">
+                            <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+                            <br>
+                            <br>
+                            <h3>Cargando .....</h3>
+                        </div>
+
+                        <div class="div" *ngIf="!question.loading">
+                            <h3 class="text-center" *ngIf="question.totalAnswers === 0">Sin respuestas ...</h3>
+                            <h3 *ngIf="question.totalAnswers > 0">Respuestas: <b>{{ question.totalAnswers }}</b></h3>
+                            <ul class="list-group list-group-flush" *ngIf="question.totalAnswers > 0">
+                                <li class="list-group-item text-justify" *ngFor="let answerItem of question.answers; let iAnswer = index">
+                                    <p>#{{ iAnswer + 1 }} <b>{{answerItem.answer}}</b> / {{ answerItem.user?.name }} {{answerItem.user?.last_name ? answerItem.user.last_name : ''}} / {{answerItem.createAt | date:'medium'}}</p>
+                                    <button class="btn btn-info float-right" (click)="updateAnswer(question, answerItem)" *ngIf="user._id === answerItem.user?._id || user.role === 'ADMIN_ROLE'">
+                                        <fa-icon [icon]="['fas', 'edit']" size="lg"></fa-icon>
+                                    </button>
+
+                                    <button class="btn btn-danger float-right" (click)="deleteAnswer(question, answerItem)" *ngIf="user._id === answerItem.user?._id || user.role === 'ADMIN_ROLE'">
+                                        <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="text-center">
+                                <button (click)="addResponse(question)" type="button" class="btn btn-success w-75" *ngIf="auth && user.role !== 'USER_ROLE'">
+                                    <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                                    Crear una respuesta
+                                </button>
+                                <hr>
+                                <button class="btn btn-primary" type="button" (click)="getAnswers(question)" *ngIf="question.totalAnswers > 0 && (question.from + 10) <= question.totalAnswers">
+                                    Mostrar más...
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="row text-center">
+            <div class="col" *ngIf="from > 0">
+                <button class="btn btn-success btn-lg" (click)="changePagination(-10, -1)">Anteriores</button>
+            </div>
+            <div class="col" *ngIf="pages > 0 && (page+1) < pages">
+                <button class="btn btn-info btn-lg" (click)="changePagination(10, 1)">Siguientes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="overflow-menu mb-3">
+    <div class="float-right pl-2 ocultar">
+        <ul class="list-group">
+            <li>
+                <span class="icon-menu icono-opciones" (click)="this.ocultarMostrar = !this.ocultarMostrar" tabindex="0" data-toggle="custom-bgtip" title="Ocultar/Mostrar columna lateral." *ngIf="menu.length > 0"></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="list-group animated fadeInLeft content-container my-list-group-horizontal" role="tablist">
+        <div *ngFor="let itemMenu of menu">
+            <a class="list-group-item list-group-item-action cursorMove {{theme}}" routerLinkActive="active" [routerLink]="[ itemMenu.ruta ]" name="sidBarItem">
+                <span *ngIf="itemMenu.icon" class="{{itemMenu.icon}} icono-opciones" tabindex="0" data-toggle="tooltip" [title]="itemMenu.title">
+        </span>
+
+                <img *ngIf="itemMenu.img" src="{{ itemMenu.img }}" class="logo-potro mr-0 mr-lg-2 p-0">
+                <label *ngIf="ocultarMostrar">{{ itemMenu.title }}</label>
+
+                <span *ngIf="itemMenu.notifications && userService.noNotif > 0" class="badge no_notificaciones animated tada infinite" [ngClass]="itemMenu.classNotif">
+                    {{ userService.noNotif }}
+                </span>
+                <span *ngIf="itemMenu.notificationsMessages && userService.noMessages > 0" class="badge no_notificaciones animated tada infinite" [ngClass]="itemMenu.classNotif">
+                    {{ userService.noMessages }}
+                </span>
+            </a>
+        </div>
+        <!--Salir-->
+        <a class="list-group-item list-group-item-action cursorMove {{theme}}" routerLinkActive="active" name="sidBarItem" (click)="userService.logOut()">
+
+            <span class="icon-exit icono-opciones"></span>
+            <label *ngIf="ocultarMostrar">Salir</label>
+        </a>
+    </div>
+
+</div>

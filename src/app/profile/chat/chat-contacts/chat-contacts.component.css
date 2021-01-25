@@ -1,0 +1,36 @@
+@media screen and (max-width: 991px) {
+    .label {
+        display: none;
+    }
+    .my-list-group-horizontal {
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    .overflow-menu {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+}
+
+.srch_bar_input {
+    border: 1px solid #cdcdcd;
+    border-width: 0 0 1px 0;
+    background: none;
+}
+
+.name {
+    display: inline;
+}
+
+.overflow-contacts {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.content-container {
+    max-width: 300px;
+}
+
+ul {
+    list-style: none;
+}

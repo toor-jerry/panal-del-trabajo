@@ -1,0 +1,16 @@
+<div class="container text-center">
+    <h5 class="font-weight-bolder">Creando las mejores herramientas tecnológicas para brindarle una ventaja competetiva en este mudo laboral!</h5>
+</div>
+<div class="card-columns">
+    <div class="card animated fadeInLeft shadow-lg p-3 rounded bg-light" *ngIf="userService.getUserRole() !== 'ENTERPRISE_ROLE'">
+        <div class="card-body">
+            <h5 class="card-title text-center">Generador de CV.</h5>
+            <p class="card-text">Genere su Currículo Vitae con un simple click!!.</p>
+            <button class="btn btn-info btn-block" (click)="getPDF()" [disabled]="loading">
+                <fa-icon [icon]="['fas', 'spinner']" [pulse]="true" *ngIf="loading"></fa-icon>
+                Generar pdf
+            </button>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

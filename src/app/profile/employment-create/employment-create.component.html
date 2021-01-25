@@ -1,0 +1,148 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div *ngIf="!loading">
+    <div class="row mb-2 text-center">
+        <div class="col">
+            <button class="btn btn-success btn-lg text-center" (click)="persist(employment)">
+                <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+                {{action}}</button>
+        </div>
+        <div class="col" *ngIf="edit">
+            <button class="btn btn-danger btn-lg" (click)="delete(employment._id)">
+                <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                Eliminar empleo
+            </button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary btn-lg text-center" [routerLink]="['/profile/employments-manager']">
+                <fa-icon [icon]="['fas', 'arrow-left']" size="lg"></fa-icon>
+                Regresar</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="card p-2">
+        <div class="card-body">
+            <div class="text-center">
+                <h4 class="card-title">{{action}}</h4>
+            </div>
+            <div>
+                <!-- Employment name and Postulations -->
+                <div class="form-group row">
+                    <div class="col-12 col-md-9">
+                        <div class="form-group">
+                            <label>Nombre del empleo:</label>
+                            <input [(ngModel)]="employment.name" class="form-control form-control-lg mb-2" type="text" placeholder="Nombre del empleo" name="name" autofocus required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h5>Postulaciones: <b>{{employment.total}}</b></h5>
+                    </div>
+                </div>
+
+                <!-- Type employment and salary -->
+                <div class="form-group row">
+                    <div class="col-12 col-md-5">
+                        <div class="form-group">
+                            <label>Salario:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-warning font-weight-bold" id="employment-salary">$ </span>
+                                </div>
+                                <input [(ngModel)]="employment.salary" class="form-control form-control-lg" type="number" placeholder="Salario" name="salary" aria-describedby="employment-salary" required min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-7">
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <select [(ngModel)]="employment.type" class="form-control form-control-lg" required>
+                            <option value="JOB_OFFER" selected>Oferta de trabajo</option>
+                            <option value="SOCIETY_SERVICE">Servicio social</option>
+                            <option value="PROFESSIONAL_PRACTICES">Prácticas profesionales</option>
+                          </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Horary -->
+                <div class="form-group">
+                    <label>Horario:</label>
+                    <input [(ngModel)]="employment.horary" class="form-control form-control-lg mb-2" type="text" placeholder="Horario" name="horary">
+                </div>
+
+                <!-- Workable_days, vacancy_numbers and state -->
+                <div class="form-group row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Días a laborar:</label>
+                            <input [(ngModel)]="employment.workable_days" class="form-control form-control-lg" type="text" placeholder="Días a laborar" name="workable_days">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="form-group">
+                            <label>Número de vacantes:</label>
+                            <input [(ngModel)]="employment.vacancy_numbers" class="form-control form-control-lg" type="number" placeholder="Vacantes" name="vacancy_numbers" min="0">
+                        </div>
+                    </div>
+                    <div class="col col-md-3">
+                        <div class="form-group">
+                            <label>Estado:</label>
+                            <div class="custom-control custom-switch text-center">
+                                <input type="checkbox" [(ngModel)]="employment.state" class="custom-control-input" name="state" id="customSwitch">
+                                <label class="custom-control-label" for="customSwitch"> </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domicile -->
+                <div class="form-group">
+                    <label>Domicilio del empleo:</label>
+                    <input [(ngModel)]="employment.domicile" class="form-control form-control-lg" type="text" placeholder="Domicilio" name="domicile">
+                </div>
+
+                <!-- Date Create and date limit -->
+                <div class="form-group row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Fecha de creación: </label>
+                            <h5>{{employment.dateCreate | date:'medium'}}</h5>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Fecha limite: </label>
+                            <input [(ngModel)]="employment.dateLimit" class="form-control form-control-lg" type="date" name="dateLimit">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description and requeriments -->
+                <div class="form-group row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Descripción del empleo: </label>
+                            <textarea [(ngModel)]="employment.description" class="form-control form-control-lg" name="description"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Requisitos: </label>
+                            <textarea [(ngModel)]="employment.requeriments" class="form-control form-control-lg" name="requeriments"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

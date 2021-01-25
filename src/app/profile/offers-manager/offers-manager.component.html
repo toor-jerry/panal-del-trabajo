@@ -1,0 +1,120 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+<div class="alert alert-info text-center" role="alert" *ngIf="!loading && offers.length === 0">
+    <h4>No se encontraron ofertas...</h4>
+    <h6><a (click)="createOffer()" class="alert-link pointer">Crear una ahora mismo</a></h6>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading && offers.length > 0">
+    <div class="col">
+        <div class="card bg-transparent border-0">
+            <div class="row">
+                <div class="col">
+                    <h3 class="card-title">Ofertas registradas (<b>{{ total }}</b>)</h3>
+                </div>
+                <div class="col text-right mr-md-1">
+                    <button class="btn btn-info btn-lg text-center" (click)="viewFormCreateOffer()">
+                        <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                        {{labelBtnCreateOffer}}
+                    </button>
+                </div>
+            </div>
+            <div class="row w-75 mx-auto p-3" *ngIf="showCreateOffer">
+                <div class="col">
+                    <form ngNativeValidate [formGroup]="offerForm" (ngSubmit)="createOffer()">
+                        <input type="text" class="form-control mb-2" placeholder="Nombre de la oferta (titulo)" formControlName="title" required>
+                        <input type="text" class="form-control mb-2" placeholder="Descripción de la oferta" formControlName="description" required>
+                        <select name="role" class="custom-select text-center pointer mb-2" formControlName="role" required>
+                            <option value="ADMIN_ROLE">Administrador</option>
+                            <option value="USER_ROLE">Usuario común</option>
+                            <option value="USER_PLATINO_ROLE">Usuario platino</option>
+                            <option value="ENTERPRISE_ROLE">Empresa</option>
+                            <option value="USER_PLATINO_ROLE__AND__ENTERPRISE_ROLE">Usuario platino y empresa</option>
+                            <option value="ALL">TODOS</option>
+                        </select>
+
+                        <input type="date" class="form-control" formControlName="duration">
+
+                        <div class="row w-75 mt-4 mx-auto">
+                            <div class="col">
+                                <button type="submit" class="btn btn-success btn-block btn-lg">
+                                    Crear oferta
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-danger btn-block btn-lg" (click)="showCreateOffer = false">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive" *ngIf="!showCreateOffer">
+                <table class="table table-hover">
+                    <thead class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Role</th>
+                            <th>Oferta</th>
+                            <th>Duración</th>
+                            <th>
+                                <button class="btn btn-success btn-lg" (click)="sync()">
+                                    <fa-icon [icon]="['fas', 'sync']" size="lg" class="pointer"></fa-icon>
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="animated fadeInLeft" *ngFor="let offer of offers; let i = index">
+                            <th>{{ (page * 10) + (i + 1) }}</th>
+                            <td>
+                                {{ offer.role == 'ADMIN_ROLE' ? 'Administrador': offer.role == 'USER_ROLE' ? 'Usuario común' : offer.role == 'USER_PLATINO_ROLE' ? 'Usuario platino' : offer.role == 'ENTERPRISE_ROLE' ? 'Empresa' : offer.role == 'USER_PLATINO_ROLE__AND__ENTERPRISE_ROLE'
+                                ? 'Usuario platino y empresa' : offer.role == 'ALL' ? 'TODOS' : 'Rol desconocido' }}
+                                <!-- <select [(ngModel)]="offer.role" name="role" class="custom-select text-center pointer">
+                                        <option value="ADMIN_ROLE">Administrador</option>
+                                        <option value="USER_ROLE">Usuario común</option>
+                                        <option value="USER_PLATINO_ROLE">Usuario platino</option>
+                                        <option value="ENTERPRISE_ROLE">Empresa</option>
+                                        <option value="USER_PLATINO_ROLE__AND__ENTERPRISE_ROLE">Usuario platino y empresa</option>
+                                        <option value="ALL">TODOS</option>
+                                    </select> -->
+                            </td>
+                            <td class="wrapper text-center">
+                                {{offer.title}}
+                            </td>
+                            <td class="text-center">
+                                {{offer.duration | date:'medium'}}
+                            </td>
+                            <td>
+                                <button class="btn btn-info" (click)="show(offer._id)">
+                                    <fa-icon [icon]="['fas', 'eye']" size="lg"></fa-icon>
+                                </button>
+
+                                <button class="btn btn-danger" (click)="delete(offer._id)">
+                                    <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row text-center" *ngIf="!loading && !showCreateOffer">
+    <div class="col" *ngIf="from > 0">
+        <button class="btn btn-success btn-lg" (click)="showMore(-10, -1)">Anteriores</button>
+    </div>
+    <div class="col" *ngIf="pages > 0 && (page+1) < pages">
+        <button class="btn btn-info btn-lg" (click)="showMore(10, 1)">Siguientes</button>
+    </div>
+</div>

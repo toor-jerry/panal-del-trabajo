@@ -1,0 +1,37 @@
+<div class="container animated fadeInLeft">
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <div class="card shadow-lg p-2 rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Linux X64</h5>
+                    <p class="card-text"><span class="icon-tux logos logo-color-tux"></span></p>
+                    <a class="btn btn-outline-primary btn-lg" *ngIf="androidUrl != ''">Descargar</a>
+                    <h3 class="text-muted" *ngIf="androidUrl==''"><span class="icon-wrench"></span><span class="icon-hammer"></span> En construcción...</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mt-3 mt-lg-0">
+            <div class="card shadow-lg p-2 rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Windows X64</h5>
+                    <p class="card-text"><span class="icon-windows8 text-primary logos"></span></p>
+                    <a class="btn btn-outline-primary btn-lg" *ngIf="windowsUrl!=''">Descargar</a>
+                    <h3 class="text-muted" *ngIf="windowsUrl==''"><span class="icon-wrench"></span><span class="icon-hammer"></span> En construcción...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center mt-3 mb-5">
+        <div class="col-sm-6 mx-auto">
+            <div class="card shadow-lg p-2 rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Android</h5>
+                    <p class="card-text"><span class="text-success icon-android logos"></span></p>
+                    <a class="btn btn-outline-primary btn-lg" *ngIf="androidUrl!=''">Descargar</a>
+                    <h3 class="text-muted" *ngIf="androidUrl==''"><span class="icon-wrench"></span><span class="icon-hammer"></span> En construcción...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

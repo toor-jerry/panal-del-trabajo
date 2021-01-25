@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col">
+        <h3>Sesiones activas: <span class="badge badge-danger">{{ userService.getUserAuth().setions }}</span></h3>
+    </div>
+    <!-- <div class="col" *ngIf="userService.getUserAuth().setions > 0">
+        <button type="button" class="btn btn-danger"><span class="icon-blocked"></span> Cerrar sesiones activas</button>
+    </div> -->
+</div>
+<div class="row" *ngIf="userService.getUserAuth().setions > 0">
+    <div class="col">
+        <div class="alert alert-danger" role="alert">
+            <small>Si no se encuentra segur@ que las demás sesiones sean suyas, le recomendamos cambiar su contraseña<b *ngIf="this.userService.getUserAuth().connections">, puede ver su 'Historial de de sesiones' para ver los dispositivos que han ingresado en su cuenta</b>.</small>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-7">
+        <input class="form-control" type="password" placeholder="Escriba su nueva contraseña" #password>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-success" (click)="changePasswordDB(password.value)">Cambiar contraseña</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col" *ngIf="!this.userService.getUserAuth().connections">
+        <button type="button" class="btn btn-info mb-2">Guardar mi historial de inicio de sesiones</button>
+        <div class="alert alert-danger" role="alert">
+            <small>
+        El almacenamiento de los dispositivos que inician sesión en su cuenta serán almacenados en nuestra Base de Datos y SOLO serán USADOS con el fin de brindarle una mejor SEGURIDAD a su cuenta, esta opción puede desactivarla en el momento que usted desee (todo el historial almacenado hasta ahora será ELIMINADO), si tiene dudas hacerca del uso de sus datos, consulte nuestro 
+        <a [routerLink]="['terminos&condiciones']">Aviso de privacidad</a>, 
+        también puede consultar nuestros <a [routerLink]="['terminos&condiciones']">Términos y condiciones de uso</a>
+      </small>
+        </div>
+    </div>
+    <div class="col mt-2" *ngIf="this.userService.getUserAuth().connections">
+        <button type="button" class="btn btn-warning mb-2">Dejar de guardar mi historial de inicio de sesiones</button>
+        <div class="alert alert-danger" role="alert">
+            <small>El almacenamiento de los dispositivos que inician sesión en su cuenta, solo es con el fin de brindarle una mejor seguridad a su cuenta y puede desactivarla en el momento que usted desee (todo el historial almacenado hasta ahora será ELIMINADO), si tiene dudas hacerca del uso de sus datos, consulte nuestro <a [routerLink]="['terminos&condiciones']">Aviso de privacidad</a>, también puede consultar nuestros <a [routerLink]="['terminos&condiciones']">Términos y condiciones de uso</a></small>
+        </div>
+    </div>
+</div>
+<div class="row mt-2 mb-2" *ngIf="this.userService.getUserAuth().connections">
+    <div class="col" *ngIf="!showListSetions">
+        <button type="button" class="btn btn-secondary" (click)="showConnections()">
+        <span class="icon-search"></span> Mostrar historial de sesiones</button>
+    </div>
+    <div class="col" *ngIf="showListSetions">
+        <button type="button" class="btn btn-secondary" (click)="showListSetions = !showListSetions">
+      <span class="icon-eye-minus"></span> Ocultar historial de sesiones</button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-danger" (click)="deleteSetions()"><span class="icon-bin"></span> Borrar historial se sesiones</button>
+    </div>
+</div>
+<div class="row" *ngIf="loading">
+    <div class="col animated fadeIn">
+        <div class="container alert-info text-center rounded rounded-lg p-4">
+            <span class="spinner-grow text-primary spinners" role="status"></span>
+            <span class="spinner-grow text-secondary spinners" role="status"></span>
+            <span class="spinner-grow text-success spinners" role="status"></span>
+            <span class="spinner-grow text-danger spinners" role="status"></span>
+            <span class="spinner-grow text-warning spinners" role="status"></span>
+            <span class="spinner-grow text-info spinners" role="status"></span>
+            <span class="spinner-grow text-dark spinners" role="status"></span>
+            <h2>Cargando, espere por favor....</h2>
+        </div>
+    </div>
+</div>
+<div class="row animated fadeIn" *ngIf="showListSetions && !loading">
+    <div class="col p-4">
+        <h3>Número de sesiones registradas: <b>{{total}}</b></h3>
+        <h4 class="text-right">Página: <b>{{page}}</b></h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent animated fadeInLeft" *ngFor="let setion of setions">
+                <p>Dispositivo: <b>{{ setion?.user_agent }}</b>; Dirección IP: <b>{{ setion?.ip_add }}</b>; Fecha y hora de inicio de sesión: <b>{{ setion?.date | date:'medium':'es' }}</b>; Hostname: <b>{{ setion?.hostname }}</b></p>
+            </li>
+        </ul>
+        <div class="row text-center" *ngIf="!loading">
+            <div class="col" *ngIf="from > 0">
+                <button class="btn btn-success btn-lg" (click)="showMore(-10, -1)">Anteriores</button>
+            </div>
+            <div class="col" *ngIf="(from + 10) < total">
+                <button class="btn btn-info btn-lg" (click)="showMore(10, 1)">Siguientes</button>
+            </div>
+        </div>
+    </div>
+    <div class="col p-4" *ngIf="setions.length === 0">
+        <h2>No existen sesiones registradas por el momento ...</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-danger" (click)="deleteAccount()"> <span class="icon-bin"></span> Eliminar mi cuenta</button>
+    </div>
+</div>

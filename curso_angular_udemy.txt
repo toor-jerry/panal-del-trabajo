@@ -1,0 +1,486 @@
+this.signUpForm.get('name').markAsTouched();
+      this.signUpForm.get('last_name').markAsTouched();
+      this.signUpForm.get('user').markAsTouched();
+      this.signUpForm.get('email').markAsTouched();
+      this.signUpForm.get('password').markAsTouched();
+
+/* return Object.values( this.signUpForm.controls ).forEach( control => {
+        control.markAsTouched();
+      } ); */
+     
+//redireccion
+        <!-- <a [routerLink]="['/usuario',i]" class="btn btn-warning btn-block">Ver más...</a> /*Otra de forma de redireccionar*/-->
+        ó
+        <button (click)="getUsuario()" type="button" class="btn btn-warning btn-block">
+
+//**********************
+*****Angular Avanzado***
+//**********************
+// CLI
+    -> ng --help     <- ayuda general
+    -> ng g c --help <- ayuda específica
+        flags o banderas:
+            -is <- inline style (sin css)
+            --skip-import <- sin importar al modulo
+            --flat <- crear o no un directorio
+
+// Declarar funciones que estan en el index.HTML (usarlas, mandarlas a llamar)
+declare function my_funcion();
+/**************
+    // CommonModule (se puede trabajar directamente los servicios desde el ngFor, ejemplo *ngFor="let menu of _sideBarService")
+    Provee ngFor, ngIf, pipes  
+
+    // Notes
+    las propiedades de un servicio se pueden acceder SIN NECESIDAD de un getter
+/******************
+//**********************
+*****Angular************
+//**********************
+
+Componentes: pequeñas clases que cumplen una tarea específica (clases normales con un decorador específico)
+
+Directivas estructurales: instrucciones que le dicen al HTML que hacer
+
+//***********Requerimientos************
+1) Angular CLI
+2) ng new my-app
+3)ng serve || ng serve -p #puerto -o//correr app
+4) npm install (solo cuando es nuevo)
+
+//CLI
+-> ng g c name_component
+-> ng g c component -is //inline scss (sin generar el css)
+-> ng g c component --spec=false
+-> ng g p name_pipe
+-> ng g module name_module --module app --flat --routing
+//Bootstrap
+->npm install bootstrap --save
+->npm install jquery --save
+->npm install popper.js --save
+
+//ES6
+    '*'.repeat( cadena.length )
+
+// Ayuda ->  <span tabindex="0" data-toggle="tooltip" title="Ocultar/Mostrar columna lateral."></span>
+
+//Rutas
+   /* location.pathname.indexOf('/buscador') >= 0; */
+
+// CDK -> para scrolling
+
+// Servicios
+@Injectable() <- solo se puede usar en un componente en toda la app (antes de la version 6) y se tiene que importar en app.module
+@Injectable({ provideIn: 'root' }) -> ya lo conoce sin importar en el module
+
+// Get
+get propiedad(){
+    return true;
+}
+
+//Interpolación
+
+app.component.html
+    <h1> {{ mi_var }} </h1>
+
+app.component.ts
+    export class AppComponent{
+        mi_var ="valor a pasar al component.html";
+    }
+
+//Backticks
+``
+
+//Decorador @Component
+    template: //si es mas de 2-3 lineas de código HTML, incluir un archivo html, si no con backticks
+        `<h1>Hello world!!</<h1>`
+
+//app.module.ts
+Se le dice a la aplicación que puede utilzar a los componentes creados
+
+//Directivas estructurales
+*ngIf="conficion"
+*ngFor="let contador of arreglo"
+
+
+//SPA (Single Page Application, aplicación de una sola página)
+
+//Rutas
+//this.router.url === '/usuario/432j4k43m' <- actual
+//console.log(this.activatedRoute.url) -> saber ruta activada
+//history.back()
+<router-outlet></router-outlet> //para renderizar los componentes
+//routerLink="['/ruta',parametro]"
+//Paso de parámetros
+    //Rutas (routerLink) //permite realizar navegacion desde la plantilla <a routerLink='/ruta' [routerLink]='active'>
+        app.routes.ts //rutas
+            import { UsuarioComponent } from 'app/components/usuarioComponent';
+            const APP_ROUTES: Routes= [
+            { path: 'usuario/:id', component: UsuarioComponent }
+            ];
+
+        usuarios.component.html
+            <a [routerLink]="['/usuario',i]">ver mas...</a>
+
+    //Rutas (programación)
+       app.routes.ts //rutas
+            import { UsuarioComponent } from 'app/components/usuarioComponent';
+            const APP_ROUTES: Routes= [
+            { path: 'usuario/:id', component: UsuarioComponent }
+            ];
+
+
+        usuarios.component.html
+            <button (click)="verUsuario(i)">ver más...</button>
+
+
+        usuarios.component.ts
+            import { Router } from '@angular/router';
+
+            constructor ( private router: Router ){}
+
+            verUsuario( idx: number ){
+                this.router.navigate( ['/herore'], idx );
+            }
+
+
+    //Recibir parámetros por URL - ActivatedRoute
+        usuario.component.ts //se quita el ngOnInit
+            import { ActivatedRoute } from '@angular/route';
+
+            constructor ( private activatedRoute: ActivatedRoute ){
+                this.activatedRoute.params.subscribe( params =>{
+                } );
+            }
+
+
+//Acceder a arreglos
+    array.valor
+
+    array['valor'] <- mejor
+
+//import { ActivatedRoute } from '@angular/router';/*Poder tomar los parametros que se mandan por URL */
+
+//@input  -> recibir informacion de un component padre a un hijo, recibir propiedad desde afuera
+
+//@output -> emitir un evento del hijo hacia el padre
+
+//subscribe -> estar escuchando los cambios
+
+// Formularios (reactivos y template ó por datos)
+Template:
+  [ngModel] <- solo recibe valores
+  [(ngModel)] <- (caja de bananas) envia y recive (no recomendado)
+  [class.miClase]="condicion"
+  #name="ngModel" [class.is-invalid]="name.invalid && name.touch"
+  Tips: primero atributos de html y despues otros, seguir mismo patron
+  Object.values( array ).forEach( control => {} )
+  array.unshift() <- agrega al principio del arreglo
+  1.- importar FormsModule de @ngular/forms //en el modulo ( port defecto ya tiene el preventDefault y enter en los campos )
+
+Reactive:
+  1.- importar ReactiveFormsModule
+  ['', [ Validators.required, Validators.minLength(5) ],],
+  valor por defecto, validadores sincronos, validadores asincronos
+
+//Manejar variables de ts en html
+src="{{ var }}" //por interpolacion, forma antigua de Angular 1 o Angular JS
+[src]="var"
+
+//Pipes (tranforman la data en el template de forma visual), capitalizado -> personalizado, pipe -> tuberia
+    {{ var | uppercase }} //todo en mayusculas
+    {{ var | slice:numero }} //corta una variable, arreglos (elimuna numero de posiciones de valor)
+    {{ var | slice:x:y }} //corta de x a y
+    *ngFor =" let varTemp of arreglo | slice:2:10 "
+    {{ var | number:'3:0-0' }} //mostrar las tres posiciones enteras y cero decimales
+    {{ var | number:'.0-2' }} //todos los enteros y dos decimales
+    {{ var | percent }} //pocentaje, redondea .234 -> 23%, .235 -> 24%
+    {{ var | percent:'4:3-5' }} //var = 1.395   output: 0134.950
+    {{ var | percent:'4:3-5':'fr' }} //locale o idioma
+    {{ var | currency:'MX' }} //moneda
+    {{ var | currency:'CAD':'symbol-narrow':'.0-0' }} //canadienses, sin el simbolo, y cero decimales
+    {{ var | json }} //<pre> -> se ve mejor
+    {{ var | async }} //se espera a que resuelva las promesas
+    {{ var | async as alias_objeto }} //se espera a que resuelva las promesas
+    {{ var | date }} //fechas
+    {{ var | date:'medium' }} //fechas
+    {{ var | date }} //fechas
+
+//Cambiar clases
+<button [ngClass]="{ claseAasignarSi: condicion, claseAasignarNo: condicion }" clase="myclase" (click)="funcionCambiar()">
+ó
+<button [ngClass]="{ claseAasignarSi: condicion, claseAasignarNo: condicion }" clase="myclase" (click)="condicion=!condicion">
+
+//Varias clase con ngClass
+<p [ngClass]="['negativo', 'off']">Pueden aplicarse varias clases</p>
+ó
+<p [ngClass]="arrayClases">Pueden aplicarse varias clases</p>
+en TS
+    clases = ['positivo', 'si'];
+
+//ngClass
+<li [ngClass]="{positivo: cantidad > 0, negativo: cantidad < 0, off: desactivado, on: !desactivado }">Línea</li>
+
+//Mostrar codigo html de un string
+[innerHTML]="pregunta.pregunta"
+
+// Producción
+ng build -> casi Producción
+
+enviroments
+  enviroments.ts
+    true
+ng build --prod
+//**********************
+*****Ionic**************
+//**********************
+usa apache cordova
+npm install -g ionic
+ionic serve
+
+//**********************
+*****TypeScript*********
+//**********************
+
+typescript instalar
+tsc --version
+
+Configuración de TS:
+    >tsc --init <- genera archivo de configuración (se le dice como se quiere que traspile o trabaje TS, al generarlo se puede ocupar <<tsc -w>>)
+    >tsconfig.json
+        {
+        "exclude": ["name_directorio_a_excluir_de_transpilacion"]
+        }
+
+
+
+.js -> javaScript
+.ts -> typescript
+
+Tipos de datos:
+    var:string
+    var: number
+    var: boolean
+    var: Date = new Date(); || var = new Date();
+    var: {}
+    var: number | string;
+    var; -> de tipo any (acepta cualquier cosa)
+
+Funciones:
+    Argumentos (obligatorio, opcionales, por defecto):
+        function activar(argumento: tipo, argumento_opcional?: tipo, argumento2:  string = "valor"){}
+
+    Función de Flecha:
+        ES5:
+            const miFuncion = funcion(a: string) {
+                return a;
+            }
+
+       ES6:
+            const miFuncionF = (a: string) => {
+                return a;
+            }
+
+            es lo mismo (sólo enviar return):
+
+            const miFuncionF = (a: string) => a;
+
+            ó también (sin tipado de datos):
+
+            const miFuncionF = a => a;
+
+
+Decoradores: expanden las clases, se le añade características y funcionalidades
+
+Tipos de variables (let y const):
+    let -> solo existe dentro del espacio o funcion (carcterista de ES6)
+    var -> global (js, ES5 no existen variables let ni const)
+    const -> pensan menos en memoria porque no tienen funciones para establecer valores
+
+Templates literales:
+    let salida = var + " " + var + " = " + var;
+    es lo mismo:
+    let salida = `${ var } ${var} =  var`;
+
+Desestructuración de objetos y arreglos:
+    objetos:
+        const objeto = { name: 'nombre', apellido: 'apellido' }
+        const {name, apellido} = objeto; //desestructurar
+        console.log(name);
+
+        ó
+
+        const extraer = ( {name, apellido}: any ) =>{ //desestructurar
+        console.log(name);
+        }
+        extraer( objeto );
+
+    arreglos:
+        const arreglo: string[] = ['uno','dos'];
+        const [ ,dos] = arreglo;
+        console.log(dos);
+
+        ó
+
+        const extraer=  ( [ uno, dos]: string[] ) =>{ //desestructurar
+            console.log(dos);
+         }
+         extraer( arreglo );
+
+
+
+
+Promesas (sirven para ejecutar código sin bloquear código de la aplicación): ES5 no las implementa sin librerias de terceros
+    funcion 'resolve': lo que se retorna cuando todo funciona bien
+    funcion 'reject': se llama cuando sucede algpún error
+
+    : Promise<number> -> valor de retorno promesa y resuelve (<>) un número
+
+    Ejemplo:
+        const mi_promesa = new Promise(( resolve, reject ) => {
+            reject('lanzando un error');
+        });
+
+        mi_promesa
+            .then( mensaje => console.log(mensaje))
+            .catch ( err => console.warn( err )); //manejando el error
+
+
+        ó
+
+        const retirarDinero = ( montoRetirar: number ): Promise<number> => {
+
+        let dineroActual = 1000;
+
+        return new Promise( (resolve, reject) => {
+
+            if ( montoRetirar > dineroActual  ) {
+                reject('No hay suficientes fondos');
+            } else {
+                dineroActual -= montoRetirar;
+                resolve( dineroActual );
+            }
+
+        });
+    }
+
+    retirarDinero( 500 )
+        .then( montoActual => console.log(`Me queda ${ montoActual }`) )
+        .catch( console.warn )
+
+
+
+
+Interfaces (reglas):
+
+    interface Xmen {
+        nombre: string;
+        edad: number;
+        poder?: string; //opcional
+    }
+
+    const enviarMision = ( xmen: Xmen ) => {
+        console.log(`Enviando a ${ xmen.nombre } a la misión`);
+    }
+
+    const wolverine: Xmen = {
+        nombre: 'Logan',
+        edad: 60
+    }
+
+    enviarMision( wolverine );
+    regresarAlCuartel( wolverine );
+
+
+
+POO:
+    Clase:
+
+        class Avenger {
+            nombre: string;
+            constructor( nombre: string){
+                this.nombre = nombre;
+            }
+            }
+
+        const antman = new Avenger('Antman');
+
+        ó también:
+        class Avenger {
+
+            nombre: string;
+            nombreReal: string;
+
+            puedePelear: boolean;
+            peleasGanadas: number;
+
+            constructor( public nombre: string,
+                         public nombreReal?: string, //opcional
+                         public puedePelear: boolean  = true, //inicializadas
+                         public peleasGanadas: number = 0){}
+        }
+
+        const antman = new Avenger('Antman');
+        console.log(antman);
+
+
+    Inicialización de objetos (TypeScript infiere el tipo cuando se instancia un objeto):
+        const obj: Clase = new Clase();
+
+        ó
+
+        const obj = new Clase();
+
+
+Imports:
+    libreria.ts:
+        export class MiClase{}
+
+    archivo:
+        import { MiClase } from './libreria.ts';
+
+        const objeto = new MiClase();
+
+
+Transpilar:
+    tsc app.ts
+    tsc -w <- está a la espera de cambios
+
+
+Función anónima autoinvocada (base del módulo de JS):
+(function(){
+//code
+})();
+
+
+
+Errores y soluciones:
+    This: dentro de una funcion el 'this' no es capaz de obtener objetos más allá de la funcion
+        solución: funcion flecha en lugar de un funcion de ES5
+            const porpiedad = {
+                propiedad: "mi propiedad",
+                () =>{
+                    this.propiedad;
+                    }
+            }
+
+
+
+
+Tips:
+    (error => console.warn () )
+    es lo mismo que ( console.warn )
+
+
+
+    // Uso de Let y Const
+    let nombre = "Ricardo Tapia"; //de igual manera si la variable no va a cambiar se puede dejar como const, pesando menos la variable
+    let edad = 23;
+
+    //En ES6 cuando se tiene una propiedad con el mismo valor que una variable, se puede omitir la variable
+    const PERSONAJE = {
+      nombre: nombre,
+      edad: edad
+    };
+
+    //quedando así
+    const PERSONAJE = {  nombre, edad };

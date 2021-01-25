@@ -1,0 +1,64 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div *ngIf="!loading">
+    <nav class="nav nav-pills nav-fill shadow p-2 mb-3 bg-light rounded animated fadeInDown">
+        <a class="nav-link pointer" [class]="{'active': showMyForos}" (click)="getMyForos()">Mis foros
+      <span class="badge badge-pill bg-success align-text-bottom">{{totalMyForos}}</span>
+    </a>
+        <a class="nav-link pointer" [class]="{'active': !showMyForos}" (click)="getAllForos()">
+      Foros
+      <span class="badge badge-pill bg-light align-text-bottom text-danger">{{totalForos}}</span>
+    </a>
+        <a class="nav-link pointer" [routerLink]="['/profile/admin-foro', 'new']">
+            <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+            Crear un foro
+        </a>
+    </nav>
+    <div class="text-center mb-3">
+        <h4><b>{{titleLabel}}</b></h4>
+        <h6>Mostrando: <b>{{foros.length}} / {{totalTmp}}</b></h6>
+    </div>
+
+    <div *ngFor="let foro of foros">
+        <div class="row pr-3 text-center animated fadeInRight">
+            <div class="col-2">
+                <fa-icon [icon]="['fas', 'user-friends']" size="3x"></fa-icon>
+            </div>
+            <div class="col border-bottom border-gray">
+                <strong class="text-gray-dark">'{{foro.name}}'</strong>
+                <br>
+                <label class="text-muted">Participantes: {{foro.admins.length + foro.participants.length}}</label> &nbsp;
+                <span class="badge" [class]="{'badge-danger' : foro.private, 'badge-info' : !foro.private}" *ngIf="showMyForos">{{foro.private ? 'Privado' : 'Público'}}</span>&nbsp;
+
+                <label class="text-muted">Creado: {{foro.created | date:'medium'}}</label>
+            </div>
+
+
+            <button *ngIf="showMyForos && foro.admins.includes(user._id)" class="btn btn-danger mt-2 border-bottom border-gray mr-2" (click)="deleteForo(foro)">
+                <fa-icon [icon]="['fas', 'trash']" size="lg"></fa-icon>
+            </button>
+            <button *ngIf="showMyForos && foro.admins.includes(user._id)" class="btn btn-info mt-2 border-bottom border-gray mr-2" [routerLink]="['/profile/admin-foro', foro._id]">
+                <fa-icon [icon]="['fas', 'edit']" size="lg"></fa-icon>
+            </button>
+            <button class="btn btn-success mt-2 border-bottom border-gray" [routerLink]="['/profile/foro', foro._id]" *ngIf="foro.admins.includes(user._id) || foro.admins.includes(user._id)">
+                <fa-icon [icon]="['fas', 'sign-in-alt']" size="lg"></fa-icon>
+            </button>
+
+            <button class="btn btn-link" (click)="sendRequestJoin(foro._id)" *ngIf="!showMyForos && (!foro.admins.includes(user._id) || !foro.admins.includes(user._id)) && !foro.joinRequest.includes(user._id)">Unirme!</button>
+            <span class="text-muted" *ngIf="!showMyForos && (!foro.admins.includes(user._id) || !foro.admins.includes(user._id)) && foro.joinRequest.includes(user._id)">En espera de ser aceptad@</span>
+        </div>
+    </div>
+
+    <div *ngIf="showMyForos && (from < totalMyForos)" class="text-center font-weight-bold mt-4">
+        <a class="mt-2 pointer" (click)="getMyForos()">Ver más...</a>
+    </div>
+
+    <div *ngIf="!showMyForos && (from < totalForos)" class="text-center font-weight-bold mt-4">
+        <a class="mt-2 pointer" (click)="getAllForos()">Ver más...</a>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+.icono-opciones {
+    font-size: 25px;
+    color: black;
+    margin-right: 10px;
+}
+
+.no_notificaciones {
+    font-size: 18px;
+    float: right;
+}
+
+.salir {
+    font-size: 30px;
+    color: red;
+}
+
+.logo-potro {
+    width: 31px;
+}
+
+ul {
+    list-style: none;
+}
+
+.cursorMove {
+    cursor: move;
+    text-decoration: none;
+}

@@ -1,0 +1,63 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading && employments.length > 0">
+    <div class="col">
+        <div class="card bg-transparent border-0">
+            <h3 class="card-title">Empleos registrados (<b>{{ total }}</b>)</h3>
+            <h4 class="text-right">Página: <b>{{ page + 1 }}</b></h4>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Vacantes</th>
+                            <th>Creado</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="animated fadeInLeft" *ngFor="let employment of employments; let i = index">
+                            <th>{{ (page * limit) + (i + 1) }}</th>
+                            <td class="wrapper">{{ employment.name }}</td>
+                            <td>{{ employment.vacancy_numbers }}</td>
+                            <td>{{ employment.dateCreate | date:'short' }}</td>
+                            <td>
+                                <span class="badge badge-danger" *ngIf="(employment.dateCreate && employment.dateLimit) && (employment.dateCreate < employment.dateLimit)">Desfasada</span>
+                                <span class="badge badge-primary" *ngIf="!employment.dateLimit || (employment.dateCreate > employment.dateLimit)">Activa</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-success">
+                                    <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+                                </button>
+
+                                <button class="btn btn-danger" (click)="delete(employment)">
+                                    <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row text-center" *ngIf="!loading">
+    <div class="col" *ngIf="from > 0">
+        <button class="btn btn-success btn-lg" (click)="changePagination(-10, -1)">Anteriores</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-info btn-lg" (click)="changePagination(10, 1)">Siguientes</button>
+    </div>
+</div>

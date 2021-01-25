@@ -1,0 +1,43 @@
+<div class="container p-4 rounded shadow-lg bg-light tamanio mb-5 text-center animated fadeIn">
+    <img src="{{ employment.enterprise.photography | image : token: 'photography': '../../assets/img/no-img.jpg' }}" class="card-img-top logo" alt="{{ employment.enterprise?.name | capitalizado }}" *ngIf="auth && employment?.enterprise?.photography">
+    <h3 *ngIf="employment?.enterprise" class="font-italic">{{ employment?.enterprise.name }}</h3>
+    <div class="card-body">
+        <h5 class="card-title font-weight-bold">{{ employment?.name }}</h5>
+        <p class="card-text text-justify" *ngIf="employment?.description"><b>Descripción del puesto:</b> {{ employment.description }} </p>
+        <div class="row">
+            <div class="col-5" *ngIf="employment?.workable_days">
+                <p class="card-text">Días laborales: <b> {{ employment.workable_days }} </b></p>
+            </div>
+            <div class="col-5" *ngIf="employment?.horary">
+                <p class="card-text">Horario: <b> {{ employment.horary }} </b></p>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-6 col-md-4" *ngIf="employment?.salary">
+                <p class="card-text text-justify">Salario: <b>{{ employment.salary | currency:"MX $ " }} </b></p>
+            </div>
+            <div class="col-6 col-md-4">
+                <p class="card-text text-justify">Vacantes: <b>{{ employment?.vacancy_numbers }} </b></p>
+            </div>
+            <div class="col col-md-4">
+                <p class="card-text text-justify">Postulaciones: <b>{{ employment?.total }} </b></p>
+            </div>
+        </div>
+        <p class="card-text text-justify" *ngIf="employment?.domicile">Domicilio: <b>{{ employment?.domicile }} </b></p>
+        <p class="card-text text-justify" *ngIf="!employment?.domicile">Domicilio:
+            <label *ngIf="employment?.enterprise?.domicile?.street"> Calle: <b>{{  employment?.enterprise?.domicile?.street }} </b> </label>
+            <label *ngIf="employment?.enterprise?.domicile?.number">, Número: <b>{{  employment?.enterprise?.domicile?.number }} </b></label>
+            <label *ngIf="employment?.enterprise?.domicile?.colony">, Colonia: <b>{{  employment?.enterprise?.domicile?.colony }} </b></label>
+            <label *ngIf="employment?.enterprise?.domicile?.municipality">, Municipio: <b>{{  employment?.enterprise?.domicile?.municipality }} </b></label>
+            <label *ngIf="employment?.enterprise?.domicile?.country">, Estado: <b>{{  employment?.enterprise?.domicile?.country }} </b></label>
+        </p>
+        <div *ngIf="employment?.requeriments">
+            <p class="card-text">Requisitos:</p>
+            {{ employment.requeriments }}
+        </div>
+
+        <div class="text-right mt-2">
+            <button class="btn btn-success btn-lg" (click)="regresar()">Regresar ...</button>
+        </div>
+    </div>
+</div>

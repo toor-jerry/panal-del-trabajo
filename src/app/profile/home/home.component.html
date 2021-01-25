@@ -1,0 +1,9 @@
+<div class="container animated fadeInRight text-center w-75 mb-5 p-0">
+    <img src="../../../assets/img/logo.png" class="img img-fluid w-50">
+    <h5 *ngIf="user.role !== 'ENTERPRISE_ROLE'">Comience su <a [routerLink]="['/profile/bolsa-trabajo']">búsqueda de empleo</a> ahora mismo, no olvide <a [routerLink]="['/profile/setting']">configurar</a> su perfil.</h5>
+    <h5 *ngIf="user.role === 'ENTERPRISE_ROLE'">Comience a <a [routerLink]="['/profile/employment-crud/new']">crear empleos</a> ahora mismo, no olvide <a [routerLink]="['/profile/setting']">configurar</a> su perfil.</h5>
+    <h5>Querémos escucharle, <a [routerLink]="['/profile/sugerencias']">escríbanos</a> sus dudas, quejas o sugerencias.</h5>
+    <small>Consulte nuestros <a [routerLink]="['/profile/terminos&condiciones']">Términos y condiciones de uso</a>.</small>
+    <br>
+    <small class="font-weight-bold">Panal del Trabajo &copy;</small>
+</div>

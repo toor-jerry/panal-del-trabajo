@@ -1,0 +1,219 @@
+<form ngNativeValidate [formGroup]="form" (ngSubmit)="send()">
+    <div class="form-row mb-3 mb-md-2 mt-md-2">
+        <div class="col-12 col-md-4 text-center">
+            <img *ngIf="!imageTemp" class="img img-fluid rounded rounded-lg" [src]=" user.photography | image:token: 'photography': '../../assets/img/no-img.jpg'">
+            <img *ngIf="imageTemp" class="img img-fluid rounded rounded-lg" [src]="imageTemp">
+            <div class="custom-file mt-2 mb-2">
+                <input type="file" class="custom-file-input" accept="image/*" lang="es" (change)="imageSelected( $event.target.files[0] )">
+                <label class="custom-file-label text-primary font-weight-bold">Seleccionar Fotografía</label>
+            </div>
+            <button type="button" (click)="uploadImage()" [disabled]="!imageUpload" class="btn btn-success btn-block">Actualizar fotografía</button>
+        </div>
+        <div class="col">
+            <div class="form-row">
+                <div class="col">
+                    <label>
+                        <span class="icon-profile logos"></span>
+                        Nombre(s)
+                    </label>
+                    <input class="form-control" type="text" placeholder="Nombre(s)" formControlName="name" [class.is-invalid]="verificarInvalidez('name')" [class.is-valid]="verificarValidez('name')" required autofocus>
+                </div>
+
+                <div class="col-lg-7" *ngIf="user.role !== 'ENTERPRISE_ROLE'">
+                    <label>
+                        <span class="icon-profile logos"></span>
+                        Apellidos
+                    </label>
+                    <input class="form-control" type="text" placeholder="Apellidos" formControlName="last_name" [class.is-invalid]="verificarInvalidez('last_name')" [class.is-valid]="verificarValidez('last_name')" required minlength="7">
+                </div>
+            </div>
+
+            <!--correo-->
+            <div class="form-row mb-3">
+                <div class="col">
+                    <label>
+                        <span class="icon-mail2 logos"></span>
+                        E-mail
+                    </label>
+                    <input class="form-control" type="email" placeholder="E-mail" formControlName="email" [class.is-invalid]="verificarInvalidez('email')" [class.is-valid]="verificarValidez('email')" required>
+                    <small class="form-text text-muted">A este correo electrónico serán enviadas las contraseñas de
+                        recuperación en caso de ser requeridas.</small>
+                </div>
+            </div>
+
+            <!-- Fecha de nacimiento, Género-->
+            <div class="form-row mb-3">
+                <div class="col">
+                    <label>
+                        <span class="icon-calendar logos"></span> Fecha de nacimiento
+                    </label>
+                    <input class="form-control" type="date" formControlName="date_birth" [class.is-invalid]="verificarInvalidez('date_birth')">
+                </div>
+
+                <div class="col" *ngIf="user.role !== 'ENTERPRISE_ROLE'">
+                    <div class="dropdown">
+                        <span class="icon-man-woman logos"></span>
+                        <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle ml-2" type="button" id="dropdownSexo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Género
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownSexo">
+                            <a class="dropdown-item pointer" (click)="establecerSexo( 'Femenino')">Femenino</a>
+                            <a class="dropdown-item pointer" (click)="establecerSexo( 'Masculino')">Masculino</a>
+                            <a class="dropdown-item pointer" (click)="habilitarCampoSexo()">Otro (especifíque)</a>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success" (click)="especificarSexo=false" *ngIf="especificarSexo">Aceptar</button>
+                    <input class="form-control" type="text" formControlName="gender">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- POTRO-HERMANO!! -->
+    <div class="form-row mb-3 mb-md-2 mt-md-2" *ngIf="user.role !== 'ENTERPRISE_ROLE'">
+        <div class="col-12 text-center">
+            <h5>Soy Potro-Hermano!!</h5>
+            <img *ngIf="!credentialTemp" class="img img-fluid rounded rounded-lg w-50" [src]=" user.credential | image:token: 'credential': '../../assets/img/no-img.jpg'">
+            <img *ngIf="credentialTemp" class="img img-fluid rounded rounded-lg w-50" [src]="credentialTemp">
+            <div class="custom-file mt-2 mb-2">
+                <input type="file" class="custom-file-input" accept="image/*" lang="es" (change)="credentialSelected( $event.target.files[0] )">
+                <label class="custom-file-label text-primary font-weight-bold">Seleccionar Comprobante</label>
+            </div>
+            <button type="button" (click)="uploadCredential()" class="btn btn-warning text-primary font-weight-bold mt-2 btn-block" [disabled]="!credentialUpload">
+                <img src="../../../assets/img/potro-logo.png"> Soy Potro-Hermano!!
+            </button>
+            <small class="form-text text-primary">Puede subir un comprobante que es universitario.</small>
+        </div>
+    </div>
+
+
+    <!-- Domicilio-->
+    <div class="form-row mb-3" formGroupName="domicile">
+        <div class="col">
+            <label>
+                <span class="icon-office logos"></span>
+                Domicilio
+            </label>
+            <div class="form-row">
+                <div class="col-md-3 mb-3">
+                    <input class="form-control" type="text" placeholder="Calle" formControlName="street">
+                </div>
+
+                <div class="col-md-1 mb-3">
+                    <input class="form-control" type="number" placeholder="No." formControlName="number">
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <input class="form-control" type="text" placeholder="Colonia o localidad" formControlName="colony">
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <input class="form-control" type="text" placeholder="Municipio" formControlName="municipality">
+                </div>
+
+                <div class="col">
+                    <input class="form-control" type="text" placeholder="Estado" formControlName="country">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Opciones platino -->
+    <div class="container" *ngIf="user.role === 'USER_PLATINO_ROLE' || user.role === 'ADMIN_ROLE'">
+
+        <!-- CONTACTO-->
+        <div class="form-row mb-3">
+            <p class="form-text text-muted">Para que los usuarios se mantengan en contacto con usted proporcione los siguientes datos de contacto:</p>
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-whatsapp logos"></span>
+                    WhatsApp
+                </label>
+                <input class="form-control" type="number" placeholder="WhatsApp" formControlName="whatsapp" minlength="5">
+            </div>
+
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-mobile logos"></span>
+                    Teléfono móvil
+                </label>
+                <input class="form-control" type="number" placeholder="Teléfono móvil" formControlName="movil_phone" minlength="10">
+            </div>
+
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-phone logos"></span>
+                    Teléfono fijo
+                </label>
+                <input class="form-control" type="number" placeholder="Teléfono fijo" formControlName="telephone" minlength="8">
+            </div>
+        </div>
+
+        <div class="form-row mb-3">
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-facebook2 logos"></span>
+                    Facebook
+                </label>
+                <input class="form-control" type="text" placeholder="Facebook" formControlName="facebook" minlength="5">
+            </div>
+
+            <div class="col-md-4">
+                <label><span class="icon-twitter logos"></span> Twitter</label>
+                <input class="form-control" type="text" placeholder="Twitter" formControlName="twitter" minlength="5">
+            </div>
+
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-instagram logos"></span>
+                    Instagram
+                </label>
+                <input class="form-control" type="text" placeholder="Instagram" formControlName="instagram" minlength="5">
+            </div>
+        </div>
+
+        <div class="form-row mb-3">
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-youtube2 logos"></span>
+                    Canal de Youtube
+                </label>
+                <input class="form-control" type="text" placeholder="Canal de Youtube" formControlName="youtube_channel" minlength="5">
+            </div>
+
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-blogger2 logos"></span>
+                    Blog personal
+                </label>
+                <input class="form-control" type="text" placeholder="Blog personal" formControlName="blog_personal" minlength="5">
+            </div>
+
+            <div class="col-md-4">
+                <label>
+                    <span class="icon-earth logos"></span>
+                    Página web
+                </label>
+                <input class="form-control" type="text" placeholder="Página web" formControlName="page_web" minlength="5">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- submit-->
+    <div class="form-group text-center w-50 mx-auto">
+        <button class="btn btn-info btn-lg btn-block" type="submit">Actualizar</button>
+    </div>
+</form>
+<!-- <hr>
+<pre>
+        Estado del formulario: {{ form.valid }}
+        <br>
+        Status: {{ form.status }}
+    </pre>
+
+<pre>
+        {{ form.value | json }}
+    </pre> -->

@@ -1,0 +1,463 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading" id="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="6x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div class="container mb-5" *ngIf="!loading">
+    <div class="container p-5 bg-light rounded shadow-lg animated fadeInDown">
+        <div class="text-right pb-1">
+            <button class="btn btn-info btn-lg" type="button" [routerLink]="['/signup']"><span
+                    class="icon-arrow-left float-right"> Regresar</span></button>
+        </div>
+        <form ngNativeValidate [formGroup]="signUpForm" (ngSubmit)="send()">
+            <div class="accordion" id="accordionRegistroFormulario">
+                <div class="card">
+                    <div class="card-header bg-dark" id="datosRequeridos">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link font-weight-bold" type="button" data-toggle="collapse" data-target="#collapseDatosRequeridos" aria-expanded="true" aria-controls="collapseDatosRequeridos">
+                                Datos requeridos *
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseDatosRequeridos" class="collapse show" aria-labelledby="datosRequeridos" data-parent="#accordionRegistroFormulario">
+                        <div class="card-body bg-light">
+                            <!-- Nombre y apellidos-->
+                            <div class="form-row mb-3">
+                                <div class="col-lg-4">
+
+                                    <label>
+                                        <span class="icon-profile logos"></span>
+                                        Nombre(s)
+                                    </label>
+
+                                    <input class="form-control" type="text" placeholder="Nombre(s)" formControlName="name" [class.is-invalid]="signUpForm.get('name').invalid" [class.is-valid]="signUpForm.get('name').valid" autofocus minlength="3" required>
+
+                                    <div class="invalid-feedback" *ngIf="signUpForm.get('name').invalid">
+                                        Por favor ingrese su(s) nombre(s).
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-5" *ngIf="! enterprise()">
+
+                                    <label>
+                                        <span class="icon-profile logos"></span>
+                                        Apellidos
+                                    </label>
+
+                                    <input class="form-control" type="text" placeholder="Apellidos" formControlName="last_name" [class.is-invalid]="signUpForm.get('last_name').invalid && signUpForm.get('last_name').touched" [class.is-valid]="signUpForm.get('last_name').valid" minlength="10"
+                                        required>
+
+                                    <div class="invalid-feedback" *ngIf="signUpForm.get('name').invalid">
+                                        Por favor ingrese sus apellidos.
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5" *ngIf="enterprise()">
+                                    <label>
+                                        <span class="icon-earth logos"></span>
+                                        Registro Federal de Contribuyentes
+                                    </label>
+
+                                    <input class="form-control" type="text" placeholder="RFC" formControlName="rfc" [class.is-invalid]="signUpForm.get('rfc').invalid && signUpForm.get('rfc').touched" [class.is-valid]="signUpForm.get('rfc').valid">
+
+                                    <div class="invalid-feedback" *ngIf="signUpForm.get('rfc').invalid">
+                                        Por favor ingrese su RFC.
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>
+                                        <span class="icon-user logos"></span>
+                                        Usuario
+                                    </label>
+
+                                    <input class="form-control" type="text" placeholder="Nombre de usuario ó correo electrónico" formControlName="user" [class.is-invalid]="(signUpForm.get('user').invalid && signUpForm.get('user').touched) || !userValid" [class.is-valid]="signUpForm.get('user').valid && userValid"
+                                        minlength="4" stopccp (keyup)="checkNameUser(userVal.value)" #userVal required>
+                                    <!-- <div *ngIf="this.signUpForm.get('user').pending"> -->
+                                    <div *ngIf="loadingCheackingUser">
+                                        <span class="spinner-grow spinner-grow-sm text-primary" role="status"></span>
+                                        <span class="spinner-grow spinner-grow-sm text-secondary" role="status"></span>
+                                        <span class="spinner-grow spinner-grow-sm text-success" role="status"></span>
+                                        <span class="spinner-grow spinner-grow-sm text-danger" role="status"></span>
+                                        <span class="spinner-grow spinner-grow-sm text-warning" role="status"></span>
+                                        <span class="sr-only">Cargando...</span>
+                                    </div>
+                                    <div class="invalid-feedback" *ngIf="signUpForm.get('user').invalid">
+                                        Por favor ingrese su nombre de usuario.
+                                    </div>
+
+                                    <small class="text-danger" *ngIf="signUpForm.get('user').getError('existe')">El nombre de usuario ya se
+                                        encuentra registrado. Elija otro por favor.</small>
+                                    <small class="form-text text-muted">El nombre de usuario será con el que accederá a
+                                        su perfil.</small>
+                                </div>
+                            </div>
+
+                            <!--correo, Contraseña y repetir contra-->
+                            <div class="form-row mb-3">
+                                <div class="col-lg-4">
+                                    <label>
+                                        <span class="icon-mail2 logos"></span>
+                                        E-mail
+                                    </label>
+
+                                    <input class="form-control" type="email" placeholder="E-mail" formControlName="email" [class.is-invalid]="signUpForm.get('email').invalid && signUpForm.get('email').touched" [class.is-valid]="signUpForm.get('email').valid" required>
+
+                                    <div class="invalid-feedback" *ngIf="signUpForm.get('email').invalid">
+                                        Por favor ingrese su correo electrónico.
+                                    </div>
+                                    <small class="form-text text-muted">A este correo electrónico serán enviadas las
+                                        contraseñas de recuperación en caso de ser requeridas.</small>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <label>
+                                        <span class="icon-key2 logos"></span>
+                                        Contraseña
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input class="form-control" type="{{ tipoPassword }}" placeholder="Contraseña" stopccp formControlName="password" [class.is-invalid]="signUpForm.get('password').invalid && signUpForm.get('password').touched" [class.is-valid]="signUpForm.get('password').valid"
+                                            minlength="6" required>
+
+                                        <div class="input-group-append pl-2">
+                                            <span class="icon-eye logos pointer" *ngIf="toggleEye" (click)="mostrarPassword()"></span>
+                                            <span class="icon-eye-blocked logos pointer" *ngIf="!toggleEye" (click)="ocultarPassword()"></span>
+                                        </div>
+                                    </div>
+
+                                    <small class="form-text text-danger" *ngIf="signUpForm.get('password').invalid">
+                                        Por favor ingrese una contraseña (longitud mínima 6 carácteres).
+                                    </small>
+                                    <small class="form-text text-muted mt-2">
+                                        Elija una contraseña segura que contenga números, letras y carácteres especiales.
+                                    </small>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <label>
+                                        <span class="icon-key2 logos text-secondary"></span>
+                                        Repita su Contraseña
+                                    </label>
+                                    <br>
+
+                                    <div class="input-group">
+                                        <input class="form-control" type="{{ tipoPassword2 }}" placeholder="Repita su contraseña" stopccp formControlName="password2" [class.is-invalid]="signUpForm.get('password2').invalid && signUpForm.errors?.noMatch && signUpForm.get('password').touched"
+                                            [class.is-valid]="signUpForm.get('password2').valid && signUpForm.get('password2').touched" minlength="6" required>
+
+                                        <div class="input-group-append pl-2">
+                                            <span class="icon-eye logos pointer" *ngIf="toggleEye2" (click)="mostrarPassword2()"></span>
+                                            <span class="icon-eye-blocked logos pointer" *ngIf="!toggleEye2" (click)="ocultarPassword2()"></span>
+                                        </div>
+                                    </div>
+
+                                    <small class="text-danger" *ngIf="signUpForm.get('password').valid && signUpForm.errors?.noMatch && !signUpForm.pristine">Las contraseñas no coinciden.</small>
+                                    <small class="text-success" *ngIf="signUpForm.get('password').valid && !signUpForm.errors?.noMatch && !signUpForm.pristine">Las contraseñas coinciden.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-dark" id="datosOpcionales">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed font-weight-bold" type="button" data-toggle="collapse" data-target="#collapseDatosOpcionales" aria-expanded="false" aria-controls="collapseDatosOpcionales">
+                                Datos opcionales
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseDatosOpcionales" class="collapse" aria-labelledby="datosOpcionales" data-parent="#accordionRegistroFormulario">
+                        <div class="card-body bg-light">
+                            <!-- Domicilio-->
+                            <div class="form-row mb-3" formGroupName="domicile">
+                                <div class="col">
+                                    <label>
+                                        <span class="icon-office logos"></span>
+                                        Domicilio
+                                    </label>
+
+                                    <div class="form-row">
+                                        <div class="col-md-3">
+                                            <input class="form-control" type="text" placeholder="Calle" formControlName="street">
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <input class="form-control" type="number" placeholder="No." formControlName="number">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <input class="form-control" type="text" placeholder="Colonia o localidad" formControlName="colony">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <input class="form-control" type="text" placeholder="municipality" formControlName="municipality">
+                                        </div>
+
+                                        <div class="col">
+                                            <input class="form-control" type="text" placeholder="Estado" formControlName="country">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fecha de nacimiento, Sexo y Titulos profesionales-->
+                            <div class="form-row mb-3" *ngIf="! enterprise()">
+                                <div class="col-12 col-lg-4">
+                                    <label>
+                                        <span class="icon-calendar logos"></span>
+                                        Fecha de nacimiento
+                                    </label>
+
+                                    <input class="form-control" type="date" formControlName="date_birth" formControlName="email" [class.is-invalid]="signUpForm.get('date_birth').invalid">
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="dropdown">
+                                        <span class="icon-man-woman logos"></span>
+                                        <button class="btn btn-outline-primary btn-sm dropdown-toggle ml-2" type="button" id="dropdownSexo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Sexo
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownSexo">
+                                            <a class="dropdown-item pointer" (click)="establecerSexo('Femenino')">Femenino</a>
+                                            <a class="dropdown-item pointer" (click)="establecerSexo('Masculino')">Masculino</a>
+                                            <a class="dropdown-item pointer" (click)="habilitarCampoSexo()">Otro (especifíque)</a>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-success" (click)="especificarSexo = false" *ngIf="especificarSexo">Aceptar</button>
+                                    <input class="form-control" type="text" formControlName="gender">
+                                </div>
+
+                                <div class="col-lg-5">
+                                    <label>
+                                        <span class="icon-profile logos"></span>
+                                        Titulos profesionales
+                                    </label>
+
+                                    <textarea class="form-control" placeholder="Titulos profesionales" formControlName="professional_titles">
+                            </textarea>
+
+                                    <small class="form-text text-muted">Ej. Licenciado en Informática
+                                        Administrativa.</small>
+                                </div>
+                            </div>
+
+                            <!-- Trabajo-->
+                            <div class="form-row mb-3" *ngIf="! enterprise()">
+                                <div class="col-lg-6">
+                                    <label>
+                                        <span class="icon-user-tie logos"></span>
+                                        Último trabajo ó actual
+                                    </label>
+
+                                    <textarea class="form-control" placeholder="Trabajo" formControlName="last_job">
+                            </textarea>
+
+                                    <small class="form-text text-muted">Ej. Informático Administrativo.</small>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label>
+                                        <span class="icon-briefcase logos"></span>
+                                        ¿Por qué me debes contactar?
+                                    </label>
+
+                                    <textarea class="form-control" formControlName="description">
+                            </textarea>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <label>
+                                        <span class="icon-newspaper logos"></span>
+                                        Especialidades
+                                    </label>
+
+                                    <textarea class="form-control" placeholder="Especialidades" formControlName="speciality" minlength="5">
+                                    </textarea>
+                                    <small class="form-text text-muted">Ej. Informático Administrativo, etc.</small>
+                                </div>
+                            </div>
+
+                            <!-- Imagenes y archivo -->
+
+
+                            <!-- Ubicacion-->
+                            <p class="form-text text-muted">Para poder ubicarlo cerca de un usuario por favor proporcione su ubicación:</p>
+                            <div class="form-row mb-3">
+                                <div class="col-lg-6">
+                                    <label for="ubicacion"><span class="icon-location logos"></span>
+                                        Ubicación
+                                    </label>
+                                    <select class="custom-select mr-sm-2" formControlName="location">
+                                        <option value="0" selected>Seleccione un municipio...</option>
+                                        <option [value]="municipality.coordinates" *ngFor="let municipality of municipalitys">
+                                            {{ municipality.municipality }}
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Por favor seleccione una ubicación.
+                                    </div>
+                                    <small class="form-text text-muted">Su ubicación será usada para ubicarlo cerca de los usuarios interesados en contactarle.</small>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="container d-none mb-3" id="mapa">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="col-sm control-label font-weight-bold">Ubicación:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="mapa-direccion" name="mapa-direccion" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="col-sm control-label font-weight-bold">Latitud:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="mapa-lat" name="mapa-lat" maxlength="12" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="col-sm control-label font-weight-bold">Longitud:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="mapa-long" name="mapa-long" maxlength="12" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-center">
+                                        <span class="icon-location2 logos"></span><label>Obtener ubicación</label>
+                                    </div>
+                                    <div class="container mt-2">
+                                        <button id="btn-ubicacion" class="btn btn-lg btn-block btn-warning">
+                                            Permitir obtener ubicación
+                                        </button>
+                                        <small class="form-text text-danger">
+                                            Conceda permisos al navegador para obtener su ubicación.
+                                        </small>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <!-- Opciones platino -->
+                            <div class="container" *ngIf="platino()">
+
+                                <!-- CONTACTO: telefono movil y fijo, whatsapp-->
+                                <div class="form-row mb-3">
+                                    <p class="form-text text-muted">Para que los usuarios se mantengan en contacto con usted proporcione los siguientes datos de contacto:</p>
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-whatsapp logos"></span>
+                                            WhatsApp
+                                        </label>
+
+                                        <input class="form-control" type="number" placeholder="WhatsApp" formControlName="whatsapp">
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-mobile logos"></span>
+                                            Teléfono móvil
+                                        </label>
+                                        <input class="form-control" type="number" placeholder="Teléfono móvil" formControlName="movil_phone">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-phone logos"></span>
+                                            Teléfono fijo ó de oficina
+                                        </label>
+
+                                        <input class="form-control" type="number" placeholder="Teléfono fijo" formControlName="telephone">
+                                    </div>
+                                </div>
+
+                                <!-- CONTACTO: facebook, twitter e instagram-->
+                                <div class="form-row mb-3">
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-facebook2 logos"></span>
+                                            Facebook
+                                        </label>
+
+                                        <input class="form-control" type="text" placeholder="Facebook" formControlName="facebook">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label><span class="icon-twitter logos"></span> Twitter</label>
+                                        <input class="form-control" type="text" placeholder="Twitter" formControlName="twitter">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-instagram logos"></span>
+                                            Instagram
+                                        </label>
+
+                                        <input class="form-control" type="text" placeholder="Instagram" formControlName="instagram">
+                                    </div>
+                                </div>
+
+                                <!-- CONTACTO: canal de youtube, blog y pagina web-->
+                                <div class="form-row mb-3">
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-youtube2 logos"></span>
+                                            Canal de Youtube
+                                        </label>
+
+                                        <input class="form-control" type="text" placeholder="Canal de Youtube" formControlName="youtube_channel">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-blogger2 logos"></span>
+                                            Blog personal
+                                        </label>
+
+                                        <input class="form-control" type="text" placeholder="Blog personal" formControlName="blog_personal">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label>
+                                            <span class="icon-earth logos"></span>
+                                            Página web
+                                        </label>
+
+                                        <input class="form-control" type="text" placeholder="Página web" formControlName="page_web">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminos y condiciones-->
+            <div class="form-group custom-control custom-checkbox">
+                <input class="form-check-input" type="checkbox" formControlName="conditions">
+                <a [routerLink]="['terminos&condiciones']">Acepto los términos y condiciones de uso.</a>
+                <small class="form-text text-danger" *ngIf="!this.signUpForm.value.conditions">Para continuar acepte los términos y condiciones de uso.</small>
+            </div>
+
+            <!-- submit-->
+            <div class="form-group text-center w-50 mx-auto">
+                <button class="btn btn-success btn-lg btn-block" type="submit">Guardar datos</button>
+            </div>
+        </form>
+    </div>
+
+</div>

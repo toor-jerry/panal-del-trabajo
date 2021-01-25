@@ -1,0 +1,154 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+<div class="container mt-2" *ngIf="searchOption">
+    <div class="row">
+        <div class="col-12 col-md-9">
+            <h3 class="text-break">Buscando: <b>{{search}}</b></h3>
+            <h5 class="text-muted">Resultados: <b>{{searchTotal}}</b></h5>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-info btn-lg" type="button" (click)="searchInput()">
+                <span class="icon-search"></span>
+              </button>
+        </div>
+        <div class="col-1" *ngIf="searchTotal > msgs.length">
+            <button class="btn btn-success btn-lg" type="button" (click)="moreSearchMessages()">
+                <fa-icon [icon]="['fas', 'arrow-circle-up']" size="lg"></fa-icon>
+              </button>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-danger btn-lg" type="button" (click)="hideSearch()">
+                <b>&times;</b>
+              </button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="mb-5 mb-lg-0" [style]="classHeight" [style]="'max-height: '+height+'px;'" id="container-msg">
+    <div class="dropdown">
+        <fa-icon class="pointer options-chat" [icon]="['fas', 'ellipsis-v']" size="2x" id="optionsChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></fa-icon>
+        <div class="dropdown-menu rounded animated fadeIn" aria-labelledby="optionsChat">
+            <button class="dropdown-item" type="button" (click)="deleteChat()">
+                <fa-icon class="text-danger" [icon]="['fas', 'trash']" size="2x"></fa-icon>
+                <b>Eliminar chat</b>
+            </button>
+        </div>
+    </div>
+    <div class="msg_history">
+        <div class="text-center text-muted font-italic" *ngIf="!room || room === ''">
+            <h4>Seleccione un chat para mostrar sus mensajes..</h4>
+        </div>
+        <div class="text-center text-muted font-italic pt-5 mt-5" *ngIf="msgs.length === 0">
+            <h4 class="text-primary">Sin mensajes ...</h4>
+        </div>
+        <div class="text-center text-muted font-italic" *ngIf="lastMsgs && msgs.length > 0">
+            <h5>Sin más mensajes.</h5>
+        </div>
+        <!-- ***********MENSAJES*************-->
+        <div id="msgs-container">
+            <div *ngFor="let msg of msgs">
+                <!-- Mensajes recibidos -->
+                <div *ngIf="msg.sender._id !== userService.getUserAuth()._id">
+                    <div class="animated fadeIn" [id]="'msg-' + msg._id">
+                        <div class="received_withd_msg">
+                            <div class="chat_photo">
+                                <img [src]="msg.sender.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 rounded rounded-lg ml-2" alt="{{ msg.sender.name }}">
+                            </div>
+                            <div class="received_msg">
+                                <p *ngIf="msg.type === 'TXT'"> {{ msg.message }} </p>
+                                <img name="msg-image" *ngIf="msg.type === 'IMG'" [src]="msg.message | image : userService.getToken(): 'messages': '../../assets/img/no-img.jpg'" class="img img-fluid rounded rounded-lg ml-2" alt="{{ msg.message }}">
+
+                                <fa-icon class="text-secondary" *ngIf="msg.type === 'FILE'" [icon]="['fas', 'file-archive']" size="5x"></fa-icon>
+                                <label *ngIf="msg.type === 'IMG' || msg.type === 'FILE'">{{msg.fileName}}</label>
+                                <span class="time_date"> {{ msg.date | date:'short':'es' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensajes enviados -->
+                <div *ngIf="msg.sender._id === userService.getUserAuth()._id" [id]="msg._id || msg._idTemp">
+                    <div class="outgoing_msg animated fadeIn" [id]="'msg-' + msg._id || msg._idTemp">
+                        <div class="sent_msg" (click)="messageOptions(msg)">
+                            <p *ngIf="msg.type === 'TXT'"> {{ msg.message }} </p>
+                            <fa-icon class="text-info" *ngIf="msg.type === 'FILE' && msg.status !== 'ERROR'" [icon]="['fas', 'file-archive']" size="5x" [pulse]="msg.status === 'SENDING'"></fa-icon>
+                            <img name="msg-image" *ngIf="msg.type === 'FILE' && msg.status === 'ERROR'" [src]="'../../../../assets/img/warning_icon.svg'" class="img img-fluid rounded rounded-lg ml-2" alt="ERROR AL ENVIAR ARCHIVO">
+
+                            <img name="msg-image" *ngIf="msg.type === 'IMG' && msg.status !== 'SENDING'" [src]="msg.message | image : userService.getToken(): 'messages': '../../assets/img/no-img.jpg'" class="img img-fluid rounded rounded-lg ml-2" alt="{{ msg.message }}">
+                            <img [id]="'imageSending-'+msg._idTemp" name="msg-image" *ngIf="msg.type === 'IMG' && msg.status === 'SENDING'" class="img img-fluid rounded rounded-lg ml-2" [src]="msg.imageTemp" alt="Enviando ...">
+
+                            <label *ngIf="msg.type === 'IMG' || msg.type === 'FILE'">{{msg.fileName}}</label>
+                            <span class="time_date"> {{ msg.date | date:'short':'es' }}</span>
+                        </div>
+                        <div class="spinner-border text-info" role="status" *ngIf="msg.status == 'SENDING'" [id]="'spinner-' + msg._idTemp">
+                            <span class="sr-only">Enviando...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label id="endChat"></label>
+        </div>
+    </div>
+
+
+    <div class="type_msg">
+        <div class="input_msg_write">
+            <!-- Ver opciones de mensaje -->
+            <div class="row pr-2" *ngIf="showOptionsMsg">
+                <div col="col">
+                    <input class="form-control invisible col-1">
+                </div>
+                <div class="col text-right">
+                    <button class="btn_msg_send_trash" type="button" (click)="deleteMessage()">
+                    <span class=" icon-bin"></span>
+                  </button>
+                </div>
+                <div class="col text-right">
+                    <button class="btn btn-danger btn-lg" type="button" (click)="closeMessageOptions()">
+                        <b>&times;</b>
+                      </button>
+                </div>
+            </div>
+
+            <!-- Escribir mensaje -->
+            <div class="row" *ngIf="!searchOption">
+                <div class="col-12">
+                    <textarea name="mensajeTxt" id="inputMessageTxt" class="form-control escribirMsg" placeholder="Escriba un mensaje..." autofocus rows="1" (keydown.enter)="sendMsg(mensaje.value, $event)" #mensaje autofocus [defaultValue]=''></textarea>
+                    <button class="btn_msg_send" type="button" id="submitMsgButton" (click)="sendMsg(mensaje.value, $event)"><span class="icon-forward3"></span></button>
+                    <button class="btn_msg_send d-none" type="button" id="newMsgButton" (click)="newMsg($event)"></button>
+                </div>
+            </div>
+
+
+
+            <div class="row pr-4" *ngIf="!searchOption">
+                <div class="col">
+                    <button class="btn_msg_send" type="button" (click)="searchInput()">
+                      <span class="icon-search"></span>
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="btn_msg_send" type="button" (click)="uploadImg()">
+                        <span class="icon-file-picture">
+                        </span>
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="btn_msg_send" type="button" (click)="uploadFile()">
+                        <span class="icon-files-empty"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>

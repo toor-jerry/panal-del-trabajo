@@ -1,0 +1,26 @@
+<div class="row animated fadeIn" *ngIf="loading || loadingProfesionalPractice || loadingSocialService">
+    <div class="col">
+        <div class="alert alert-info p-4 text-center rounded rounded-lg" role="alert">
+            <span class="spinner-grow text-primary spinners" role="status"></span>
+            <span class="spinner-grow text-secondary spinners" role="status"></span>
+            <span class="spinner-grow text-success spinners" role="status"></span>
+            <span class="spinner-grow text-danger spinners" role="status"></span>
+            <span class="spinner-grow text-warning spinners" role="status"></span>
+            <span class="spinner-grow text-info spinners" role="status"></span>
+            <span class="spinner-grow text-dark spinners" role="status"></span>
+            <h2>Cargando, espere por favor....</h2>
+        </div>
+    </div>
+</div>
+
+<div class="bg-purple p-3 rounded animated fadeInRight" *ngIf="!loading">
+    <a class="text-decoration-none pointer" (click)="showSocialService()" *ngIf="!loadingSocialService">
+        <h2 class="text-light font-weight-bold"><span class="icon-book iconos-bolsas-servicio"></span> Sevicio social <span class="badge badge-pill badge-warning">{{nSocialService}}</span> <small> puestos</small>. </h2>
+    </a>
+</div>
+<br>
+<div class="bg-info p-3 rounded animated fadeInLeft" *ngIf="!loadingProfesionalPractice">
+    <a class="text-decoration-none pointer" (click)="showProfessionalPratice()">
+        <h2 class="text-dark font-weight-bold"><span class="icon-briefcase iconos-bolsas-practicas"></span> Prácticas profesionales <span class="badge badge-pill badge-warning">{{nProfessionalService}}</span> <small> puestos</small>. </h2>
+    </a>
+</div>

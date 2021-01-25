@@ -1,0 +1,54 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+
+
+<!-- Search Bar -->
+<div class="row animated fadeIn">
+    <div class="col">
+        <h4>Contactos <button type="button" class="btn btn-outline-info float-right" (click)="searchContacts(searchBarContacts.value)" *ngIf="!hide">
+            <fa-icon [icon]="['fas', 'search']" size="lg"></fa-icon>
+        </button></h4>
+        <input type="text" class="form-control srch_bar_input mb-1" placeholder="Buscar y enter..." (keydown.enter)="searchContacts(searchBarContacts.value)" #searchBarContacts *ngIf="!hide">
+    </div>
+</div>
+
+<div *ngIf="!loading">
+
+    <h4 *ngIf="contacts.length === 0 && chats.length === 0">No se encontraron contactos...</h4>
+
+    <div class="overflow-contacts" *ngIf="contacts.length > 0 || chats.length > 0">
+        <div class="float-right pl-2 ocultar">
+            <ul class="list-group">
+                <li>
+                    <span class="icon-menu float-right icono-opciones pointer hide-movil" (click)="hide = !hide" tabindex="0" data-toggle="custom-bgtip" title="Ocultar/Mostrar columna lateral."></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="list-group animated fadeInLeft my-list-group-horizontal overflow-menu" role="tablist" [style]="classHeight">
+            <div *ngFor="let conversation of chats">
+                <a class="list-group-item list-group-item-action pointer" routerLinkActive="active" [routerLink]="[ 'conversation', conversation._id ]" name="contacts" style="height: 100%;">
+                    <fa-icon [icon]="['fas', 'circle']" size="sm" [class]="{'text-danger': false, 'text-success': true}"></fa-icon>
+                    <img [src]="conversation.participants[0].thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 rounded rounded-lg ml-2" alt="{{ conversation.participants[0].name }}">
+                    <br class="label">
+                    <div [class]="{'hide': hide, 'name': !hide}"> {{ conversation.participants[0].name }} {{ conversation.participants[0]?.last_name}}</div>
+                </a>
+            </div>
+
+            <div *ngFor="let contact of contacts">
+                <a class="list-group-item list-group-item-action animated fadeIn" [routerLink]="[ 'conversation/new', contact._id ]" name="contacts" style="height: 100%;">
+                    <fa-icon [icon]="['fas', 'circle']" size="sm" [class]="{'text-danger': false, 'text-success': true}"></fa-icon>
+                    <img [src]="contact.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 rounded rounded-lg ml-2" alt="{{ contact?.name }}">
+                    <br class="label">
+                    <div [class]="{'hide': hide, 'name': !hide}"> {{ contact.name }} {{ contact?.last_name}}</div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>

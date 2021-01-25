@@ -1,0 +1,17 @@
+.iconos{
+  font-size: 25px;
+}
+.desabilitar-opciones{
+  display: none;
+}
+@media screen and (max-width: 991px) {
+    .desabilitar-opciones {
+        display: block;
+    }
+}
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 2px solid grey;
+}

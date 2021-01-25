@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Panal</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" id="theme-pages">
+    <!-- href="assets/css/themes/theme-default-dark.css" -->
+    <link rel="stylesheet" href="assets/animate.css">
+    <!--ICONMON-->
+    <link rel="stylesheet" type="text/css" href="assets/style.css" />
+    <!-- Google -->
+    <script src="http://localhost:3000/platform.js"></script>
+    <!--<script src="https://apis.google.com/js/platform.js"></script> -->
+    <meta name="google-signin-client_id" content="266268775348-iqocukp3ju50oc1uunp5odfj1uo2cm5h.apps.googleusercontent.com">
+
+</head>
+
+<body class="bg-container" id="body">
+    <app-root></app-root>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io('http://localhost:3000', {
+            transports: ['websocket']
+        });
+    </script>
+</body>
+
+</html>

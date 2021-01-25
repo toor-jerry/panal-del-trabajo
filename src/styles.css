@@ -1,0 +1,32 @@
+@media screen and (max-width: 991px) {
+    .hide-movil {
+        display: none;
+    }
+}
+
+.bg-custom-gray {
+    background-color: #cdd4db;
+    color: #cdd4db;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.width-50 {
+    width: 50px;
+}
+
+.width-70 {
+    width: 70px;
+}
+
+.hide {
+    display: none;
+}
+
+.icono-opciones {
+    font-size: 25px;
+    color: black;
+    margin-right: 10px;
+}

@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-lg fixed-top" id="navbarProfile">
+    <a class="navbar-brand ml-0 ml-lg-5 mr-0" [routerLink]="['setting']">
+        <img class="img img-fluid desabilitar-opciones" [src]="userService.getUserAuth().thumbnail_photography | image:userService.getToken():'photographyChat':'../../assets/img/no-img.jpg'" width="30" height="30" alt="">
+        <span class="align-middle desabilitar-opciones">
+            {{ userService.getUserAuth().name }} {{ userService.getUserAuth().last_name }}
+          </span>
+        <span class="align-middle habilitar-opciones">
+            Panal del Trabajo
+          </span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-center pl-0 pl-lg-5 ml-0 ml-lg-5" id="navbarSupportedContent">
+        <ul class="navbar-nav" *ngIf="!view">
+            <li class="nav-item mr-4" routerLinkActive="active">
+                <a class="nav-link p-0" [routerLink]="['home']"><span class="icon-home3 iconos-bar" tabindex="0" data-toggle="tooltip" title="Inicio"></span><b class="ml-3 habilitar-opciones">Inicio</b></a>
+            </li>
+            <li class="nav-item mr-4" routerLinkActive="active">
+                <a class="nav-link p-0" [routerLink]="['descargas']"><span class="icon-download2 iconos-bar" tabindex="0" data-toggle="tooltip" title="Descargas"></span><b class="ml-3 habilitar-opciones">Descargas</b></a>
+            </li>
+            <li class="nav-item mr-4" routerLinkActive="active">
+                <a class="nav-link p-0" [routerLink]="['fqa']"><span class="icon-question iconos-bar" tabindex="0" data-toggle="tooltip" title="Preguntas frecuentes"></span><b class="ml-3 habilitar-opciones">Preguntas frecuentes</b></a>
+            </li>
+        </ul>
+    </div>
+    <!-- Campo de búsqueda -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <div class="form-inline">
+            <input type="text" class="form-control form-control-lg mr-2 animated fadeInLeft" placeholder="Buscar y enter..." *ngIf="view">
+            <button type="button" class="btn btn-outline-success btn-lg animated fadeInRight" (click)="view = !view">
+            <span class="icon-search"></span>
+        </button>
+        </div>
+        <div class="dropdown desabilitar-opciones">
+            <button class="btn btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img class="img img-fluid" [src]="userService.getUserAuth().thumbnail_photography | image:userService.getToken():'photographyChat':'../../assets/img/no-img.jpg'" width="30" height="30" alt="">
+        </button>
+            <div class="dropdown-menu dropdown-menu-lg-right menu-popup animated bounceIn" aria-labelledby="dropdownMenuButton">
+                <div class="p-3 text-center">
+                    <b><fa-icon [icon]="['fas', 'circle']" size="sm" [class]="{'text-danger': !status, 'text-success': status}" [pulse]="true"></fa-icon>
+                        {{ userService.getUserAuth().name }} {{ userService.getUserAuth().last_name }}</b>
+                    <hr> {{ userService.getUserAuth().email }}
+                    <h5><span class="badge badge-pill badge-info pointer" routerLink="['setting']">Ver mi perfil</span></h5>
+                </div>
+                <a class="dropdown-item" routerLinkActive="active" routerLink="[ 'notificaciones' ]" *ngIf="notif">
+                    <span class="icon-bell"></span> Notificaciones
+                    <span class="badge no_notificaciones animated tada infinite" ngClass="badge-danger" *ngIf="userService.noNotif > 0"> {{userService.noNotif}}</span>
+                </a>
+
+                <a class="dropdown-item" routerLinkActive="active" routerLink="[ 'chat' ]" *ngIf="messages">
+                    <span class="icon-bubbles3"></span> Chat
+                    <span class="badge no_notificaciones animated tada infinite" ngClass="badge-warning" *ngIf="userService.noMessages > 0"> {{userService.noMessages}}</span>
+                </a>
+
+                <a class="dropdown-item" routerLinkActive="active" [routerLink]="[ 'soporte-tecnico' ]">
+                    <span class="icon-wrench"></span> Soporte técnico
+                </a>
+
+                <a class="dropdown-item" routerLinkActive="active" [routerLink]="[ 'setting' ]">
+                    <span class="icon-cog"></span> Configurar perfil
+                </a>
+
+                <div role="separator" class="dropdown-divider"></div>
+                <!--Salir-->
+                <a class="dropdown-item pointer font-weight-bold" routerLinkActive="active" (click)="userService.logOut()">
+                    <span class="icon-exit icono-opciones"></span> Salir
+                </a>
+            </div>
+        </div>
+
+    </div>
+</nav>

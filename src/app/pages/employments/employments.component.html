@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-12 col-md-5">
+        <h3><b>{{filter}}: </b> {{ total }} <label *ngIf="searching">/ {{totalSearch}}</label></h3>
+    </div>
+    <div class="col text-right" *ngIf="auth">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-lg dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="icon-filter iconos-search"></span>
+        <span class="sr-only iconos-search">Toggle Dropdown</span>
+    </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item pointer" (click)="changeFilter(1)">
+                    Todo
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter(2)">
+                    Empleos
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter(3)">
+                    Servicio social
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter(4)">
+                    Prácticas profesionales
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter(5)">
+                    Postulaciones
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col" *ngIf="auth" [class]="{'invisible': !showInputSearch}">
+        <form class="form-inline animated fadeInRight">
+            <div class="input-group">
+                <input class="form-control form-control-lg ml-0" type="search" placeholder="Buscar ..." aria-label="Buscar" id="searchInputEmplyments" (keydown.enter)="searchEmployment(buscarVal.value)" #buscarVal>
+                <div class="input-group-append">
+                    <button (click)="searchEmployment(buscarVal.value)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
+<hr>
+<div class="row animated fadeIn" *ngIf="loading">
+    <div class="col">
+        <div class="alert alert-info p-4 text-center rounded rounded-lg" role="alert">
+            <span class="spinner-grow text-primary spinners" role="status"></span>
+            <span class="spinner-grow text-secondary spinners" role="status"></span>
+            <span class="spinner-grow text-success spinners" role="status"></span>
+            <span class="spinner-grow text-danger spinners" role="status"></span>
+            <span class="spinner-grow text-warning spinners" role="status"></span>
+            <span class="spinner-grow text-info spinners" role="status"></span>
+            <span class="spinner-grow text-dark spinners" role="status"></span>
+            <h2>Cargando, espere por favor....</h2>
+        </div>
+    </div>
+</div>
+<div class="card-columns mb-3 animated fadeIn" *ngIf="!loading">
+    <app-employment-card [employment]="postulation" [index]="postulation._id" [postulation]="true" *ngFor="let postulation of postulations">
+    </app-employment-card>
+    <app-employment-card [employment]="employment" [index]="employment._id" *ngFor="let employment of employments">
+    </app-employment-card>
+</div>
+
+<div class="alert alert-info text-center" role="alert" *ngIf="!loading && (postulations.length === 0 && employments.length === 0)">
+    <h4>Por el momento no contamos con información para mostrar...</h4>
+</div>
+
+
+<div class="row text-center" *ngIf="!loading">
+    <div class=" col " *ngIf="from> 0">
+        <button class="btn btn-success btn-lg" (click)="changePagination(-10)">Anteriores</button>
+    </div>
+    <div class="col" *ngIf="total > from">
+        <button class="btn btn-info btn-lg" (click)="changePagination(10)">Siguientes</button>
+    </div>
+</div>

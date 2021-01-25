@@ -1,0 +1,59 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+<div class="row mb-2">
+    <div class="col col-md-4">
+        <h3 class="card-title">{{filter}} (<b>{{ total }}</b>)</h3>
+    </div>
+    <div class="col col-md-3">
+        <h4 class="card-title">Página <b>{{page}} / {{ pages }}</b></h4>
+    </div>
+    <div class="col">
+        <div class="btn-group">
+            <button type="button" class="btn btn-success btn-lg dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="icon-filter iconos-search"></span>
+            <span class="sr-only iconos-search">Toggle Dropdown</span>
+        </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item pointer" (click)="changeFilter(1)">
+                        Estudiantes
+                    </a>
+                <a class="dropdown-item pointer" (click)="changeFilter(2)">
+                        Empresas
+                    </a>
+            </div>
+            <form class="form-inline animated fadeInRight">
+                <div class="input-group">
+                    <input class="form-control form-control-lg ml-0" type="search" placeholder="Buscar ..." aria-label="Buscar" id="searchInputEmplyments" (keydown.enter)="search(buscarValUser.value, $event)" #buscarValUser>
+                    <div class="input-group-append">
+                        <button (click)="search(buscarValUser.value, $event)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="users.length === 0">
+    <div class="col text-center">
+        <h3>No se encontraron resultados...</h3>
+    </div>
+</div>
+<div *ngIf="!loading">
+    <div class="card-columns">
+        <app-user-card [user]="user" [contacts]="contacts" *ngFor="let user of users">
+        </app-user-card>
+    </div>
+
+    <div class="row text-center" *ngIf="!loading && pages > 1">
+        <div class="col" *ngIf="from > 0">
+            <button class="btn btn-success btn-lg" (click)="changePagination(-10)">Anteriores</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-info btn-lg" (click)="changePagination(10)">Siguientes</button>
+        </div>
+    </div>

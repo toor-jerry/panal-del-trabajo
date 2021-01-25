@@ -1,0 +1,107 @@
+            <!-- Trabajo-->
+            <div class="form-row mb-3">
+                <div class="col-lg-5">
+                    <label>
+            <span class="icon-profile logos"></span>
+            Titulos profesionales
+        </label>
+
+                    <textarea class="form-control" placeholder="Titulos profesionales" formControlName="professional_titles">
+                        </textarea>
+
+                    <small class="form-text text-muted">Ej. Licenciado en Informática
+            Administrativa.</small>
+                </div>
+
+                <div class="col-lg-6">
+                    <label>
+                    <span class="icon-user-tie logos"></span>
+                    Último trabajo ó actual
+                </label>
+
+                    <textarea class="form-control" placeholder="Trabajo" formControlName="last_job">
+                                </textarea>
+
+                    <small class="form-text text-muted">Ej. Informático Administrativo.</small>
+                </div>
+
+                <div class="col-lg-6">
+                    <label>
+                    <span class="icon-briefcase logos"></span>
+                    ¿Por qué me debes contactar?
+                </label>
+
+                    <textarea class="form-control" formControlName="description">
+                                </textarea>
+                </div>
+            </div>
+
+
+
+<!-- Ubicacion-->
+<p class="form-text text-muted">Para poder ubicarlo cerca de un usuario por favor proporcione su ubicación:
+</p>
+<div class="form-row mb-3">
+    <div class="col-lg-6">
+        <label for="ubicacion"><span class="icon-location logos"></span>
+                        Ubicación
+                    </label>
+        <select class="custom-select mr-sm-2" formControlName="location">
+                        <option value="0" selected>Seleccione un municipio...</option>
+                        <option [value]="municipality.coordinates" *ngFor="let municipality of municipalitys">
+                            {{ municipality.municipality }}
+                        </option>
+                    </select>
+        <div class="invalid-feedback">
+            Por favor seleccione una ubicación.
+        </div>
+        <small class="form-text text-muted">Su ubicación será usada para ubicarlo cerca de los usuarios
+                        interesados en contactarle.</small>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="container d-none mb-3" id="mapa">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="col-sm control-label font-weight-bold">Ubicación:</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="mapa-direccion" name="mapa-direccion" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="col-sm control-label font-weight-bold">Latitud:</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="mapa-lat" name="mapa-lat" maxlength="12" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="col-sm control-label font-weight-bold">Longitud:</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="mapa-long" name="mapa-long" maxlength="12" />
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-end justify-content-center">
+            <span class="icon-location2 logos"></span><label>Obtener ubicación</label>
+        </div>
+        <div class="container mt-2">
+            <button id="btn-ubicacion" class="btn btn-lg btn-block btn-warning">
+                            Permitir obtener ubicación
+                        </button>
+            <small class="form-text text-danger">
+                            Conceda permisos al navegador para obtener su ubicación.
+                        </small>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+

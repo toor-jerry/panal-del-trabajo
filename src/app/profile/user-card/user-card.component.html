@@ -1,0 +1,19 @@
+<div class="card animated fadeIn fast">
+    <img src="{{ user.photography | image : userService.getToken(): 'photography': '../../assets/img/no-img.jpg' }}" class="card-img-top img img-fluid" alt="{{ user?.name }}">
+    <div class="card-body">
+        <h5 class="card-title">{{ user.name }} {{ user.last_name }}</h5>
+        <button (click)="addContact(user)" type="button" class="btn btn-info btn-block" *ngIf="!contacts.includes(user._id)">
+            <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+            Agregar a mis contactos
+        </button>
+        <p class="card-text text-justify"> {{ user.description | slice:0:100 }}... </p>
+
+        <p class="card-text"><small class="text-muted"> {{ user.professional_titles }} </small></p>
+
+        <button (click)="getUser(user._id)" type="button" class="btn btn-warning btn-block">
+
+            Ver mas..
+        </button>
+
+    </div>
+</div>

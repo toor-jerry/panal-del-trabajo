@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-12 col-md-5">
+        <h3><b>Servicio Social: </b> {{ total }} <label *ngIf="searching">/ {{totalSearch}}</label></h3>
+    </div>
+
+    <div class="col">
+        <form class="form-inline animated fadeInRight">
+            <div class="input-group">
+                <input class="form-control form-control-lg ml-0" type="search" placeholder="Buscar ..." aria-label="Buscar" id="searchInputEmplyments" (keydown.enter)="searchEmployment(buscarVal.value)" #buscarVal>
+                <div class="input-group-append">
+                    <button (click)="searchEmployment(buscarVal.value)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<hr>
+<div class="row animated fadeIn" *ngIf="loading">
+    <div class="col">
+        <div class="alert alert-info p-4 text-center rounded rounded-lg" role="alert">
+            <span class="spinner-grow text-primary spinners" role="status"></span>
+            <span class="spinner-grow text-secondary spinners" role="status"></span>
+            <span class="spinner-grow text-success spinners" role="status"></span>
+            <span class="spinner-grow text-danger spinners" role="status"></span>
+            <span class="spinner-grow text-warning spinners" role="status"></span>
+            <span class="spinner-grow text-info spinners" role="status"></span>
+            <span class="spinner-grow text-dark spinners" role="status"></span>
+            <h2>Cargando, espere por favor....</h2>
+        </div>
+    </div>
+</div>
+<div class="card-columns mb-3 animated fadeIn" *ngIf="!loading">
+    <app-employment-card [employment]="employment" [index]="employment._id" *ngFor="let employment of employments">
+    </app-employment-card>
+</div>
+
+<div class="alert alert-info text-center" role="alert" *ngIf="!loading && employments.length === 0">
+    <h4>Por el momento no contamos con nuevas oportunidades para servicio social.</h4>
+    <h5>Lamentamos el invonveniente, seguimos trabajando para traerle más oportunidades.</h5>
+
+</div>
+
+
+<div class="row text-center" *ngIf="!loading">
+    <div class=" col " *ngIf="from> 0">
+        <button class="btn btn-success btn-lg" (click)="changePagination(-10)">Anteriores</button>
+    </div>
+    <div class="col" *ngIf="total > from">
+        <button class="btn btn-info btn-lg" (click)="changePagination(10)">Siguientes</button>
+    </div>
+</div>

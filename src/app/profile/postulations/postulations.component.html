@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-12 col-md-7">
+        <h3><b>{{filter}}: </b> {{ total }}</h3>
+    </div>
+    <div class="col">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-lg dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="icon-filter iconos-search"></span>
+        <span class="sr-only iconos-search">Toggle Dropdown</span>
+    </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item pointer" (click)="changeFilter('Todas mis postulaciones',1)">
+                    Todas mis postulaciones
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter('Postulaciones a empleos', 2)">
+                    Postulaciones a empleos
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter('Postulaciones a Servicio social', 3)">
+                    Postulaciones a Servicio social
+                </a>
+                <a class="dropdown-item pointer" (click)="changeFilter('Postulaciones a Prácticas profesionales',4)">
+                    Postulaciones a Prácticas profesionales
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row animated fadeIn" *ngIf="loading">
+    <div class="col">
+        <div class="alert alert-info p-4 text-center rounded rounded-lg" role="alert">
+            <span class="spinner-grow text-primary spinners" role="status"></span>
+            <span class="spinner-grow text-secondary spinners" role="status"></span>
+            <span class="spinner-grow text-success spinners" role="status"></span>
+            <span class="spinner-grow text-danger spinners" role="status"></span>
+            <span class="spinner-grow text-warning spinners" role="status"></span>
+            <span class="spinner-grow text-info spinners" role="status"></span>
+            <span class="spinner-grow text-dark spinners" role="status"></span>
+            <h2>Cargando, espere por favor....</h2>
+        </div>
+    </div>
+</div>
+<div class="card-columns mb-3 animated fadeIn" *ngIf="!loading">
+    <app-postulation-card [employment]="postulation" [index]="postulation._id" [postulation]="true" *ngFor="let postulation of postulations">
+    </app-postulation-card>
+</div>
+<div class="alert alert-danger text-center" role="alert" *ngIf="!loading && postulations.length === 0">
+    <h4>No cuenta con postulaciones...</h4>
+    <h6>Diríjase a la sección <a [routerLink]="['/profile/bolsa-trabajo']" class="alert-link">Bolsa de Trabajo</a> para postularse.</h6>
+</div>
+<div class="row text-center" *ngIf="!loading">
+    <div class=" col " *ngIf="from> 0">
+        <button class="btn btn-success btn-lg" (click)="changePagination(-10)">Anteriores</button>
+    </div>
+    <div class="col" *ngIf="total > from">
+        <button class="btn btn-info btn-lg" (click)="changePagination(10)">Siguientes</button>
+    </div>
+</div>

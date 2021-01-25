@@ -1,0 +1,29 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+<div class="container w-user p-0 animated fadeIn" *ngIf="!loading">
+    <div class="card bg-light-gray">
+        <img src="{{ user.photography | image : userService.getToken(): 'photography': '../../assets/img/no-img.jpg' }}" class="card-img-top img img img-fluid rounded-top" alt=" {{ user.name }} {{ user.last_name }} ">
+        <div class="card-body p-5">
+            <h5 class="card-title"> {{ user.name }} {{ user?.last_name }} </h5>
+            <h5 *ngIf="user?.date_birth">Fecha de cumpleaños: {{user.date_birth | date:'fullDate'}}</h5>
+            <p class="card-text text-justify" *ngIf="user?.description"> {{ user.description }} </p>
+            <p class="card-text">
+                <small class="text-muted">{{user.email}}</small>
+            </p>
+            <h5 *ngIf="user?.domicile">Dirección: {{user.domicile?.street}} #{{user.domicile?.number}}, {{user.domicile?.colony}},{{user.domicile?.municipality}}, {{user.domicile?.country}}</h5>
+            <h4 *ngIf="user?.professional_titles">{{user.professional_titles}}</h4>
+            <h4 *ngIf="user?.speciality">Especialidades: {{user.speciality}}</h4>
+            <h5 *ngIf="user?.last_job">Último trabajo: {{user.last_job}}</h5>
+            <h5 *ngIf="user?.whatsapp">
+                <fa-icon [icon]="['fab', 'whatsapp']" size="5x"></fa-icon> Whatsapp: {{user.whatsapp}}</h5>
+            <div class="row justify-content-end">
+                <button class="btn btn-success btn-lg" (click)="regresar()">Regresar ...</button>
+            </div>
+        </div>
+    </div>
+</div>

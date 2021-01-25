@@ -1,0 +1,18 @@
+<div class="card animated bounceIn fast text-center shadow-lg">
+    <img src="{{ employment.enterprise.photography | image : token: 'photography': '../../assets/img/no-img.jpg' }}" class="card-img-top" alt="{{ employment.enterprise?.name | capitalizado }}" *ngIf="auth && employment?.enterprise?.photography">
+    <div class="card-body">
+        <h5 class="card-title">{{ employment?.name | capitalizado:false }}</h5>
+
+        <p class="card-text text-justify" *ngIf="employment.description"> {{ employment.description | slice:0:100 }}... </p>
+
+        <p class="card-text text-justify" *ngIf="employment.workable_days">Días laborales: <b> {{ employment.workable_days }} </b></p>
+        <p class="card-text text-justify" *ngIf="employment.horary">Horario: <b> {{ employment.horary }} </b></p>
+        <p class="card-text text-justify" *ngIf="employment.salary">Salario: <b>{{ employment.salary | currency:"MX $ " }} </b></p>
+        <p class="card-text text-justify" *ngIf="employment.vacancy_numbers">Vacantes: <b>{{ employment.vacancy_numbers }} </b></p>
+        <p class="card-text text-justify" *ngIf="employment.dateCreate">Publicado: <b>{{ employment.dateCreate | date:'medium' }} </b></p>
+
+        <button (click)="getEmpleo()" type="button" class="btn btn-warning btn-block" *ngIf="auth">
+            Más información..
+        </button>
+    </div>
+</div>

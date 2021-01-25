@@ -1,0 +1,46 @@
+<div class="card shadow-lg bg-light rounded p-0 p-lg-4 mb-5">
+    <div class="card-body">
+        <form ngNativeValidate [formGroup]="loginForm" (ngSubmit)="auth()">
+            <div class="text-center mb-2 animated fadeInDown" *ngIf="loading">
+                <span class="spinner-grow text-primary" role="status"></span>
+                <span class="spinner-grow text-secondary" role="status"></span>
+                <span class="spinner-grow text-success" role="status"></span>
+                <span class="spinner-grow text-danger" role="status"></span>
+                <span class="spinner-grow text-warning" role="status"></span>
+                <span class="sr-only">Validando ...</span>
+            </div>
+            <input class="form-control form-control-lg mb-2" type="text" placeholder="Nombre de usuario" formControlName="user" [class.is-invalid]="formInvalid('user')" required [disabled]="!loading" autofocus>
+            <div class="invalid-feedback animated fadeInRight" *ngIf="formInvalid('user')">
+                Por favor ingrese su usuario.
+            </div>
+            <input class="form-control form-control-lg mb-3" type="password" placeholder="Contraseña" formControlName="password" [class.is-invalid]="formInvalid('password')" [disabled]="!loading" required>
+
+            <div class="invalid-feedback animated fadeInRight" *ngIf="formInvalid('password')">
+                Por favor ingrese su contraseña (mayor a 5 carácteres).
+            </div>
+            <button class="btn btn-info btn-lg btn-block" type="submit" *ngIf="!loading">Ingresar</button>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="switchRecordar" formControlName="remember">
+                <label class="custom-control-label" for="switchRecordar">Recordar mi usuario</label>
+            </div>
+        </form>
+        <a class="text-primary font-weight-bold" [routerLink]="['terminos&condiciones']"><small class="font-italic">Acepto los Términos y condiciones de uso</small></a>
+        <div class="text-center">
+            <a class="text-primary font-weight-bold" [routerLink]="['forgot_password']">Olvidé mi contraseña</a>
+            <a class="btn btn-success btn-lg btn-block mt-4 mb-3" [routerLink]="['/signup']">Registrar nueva cuenta</a>
+            <div class="row">
+                <div class="col-5">
+                    <hr class="font-weight-bold">
+                </div>
+                <div class="col-2">
+                    <h5>Ó</h5>
+                </div>
+                <div class="col">
+                    <hr>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger btn-lg btn-block" id="googleSignIn">Ingresar con <span class="icon-google-plus iconos align-middle"></span></button>
+            <button type="button" class="btn btn-primary btn-lg btn-block d-none">Ingresar con <span class="icon-facebook2 iconos align-middle"></span></button>
+        </div>
+    </div>
+</div>

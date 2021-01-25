@@ -1,0 +1,150 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+
+<div *ngIf="!loading" class="mx-auto w-75">
+    <form ngNativeValidate [formGroup]="foroForm" (ngSubmit)="persistData()">
+        <div class="form-group">
+            <input class="form-control form-control-lg" type="text" placeholder="Nombre del foro" formControlName="name" required>
+        </div>
+        <!--Participants-->
+        <div class="form-row mb-3">
+            <div class="col">
+
+                <label>Visibilidad del foro:
+            </label>
+                <select class="custom-select custom-select-lg mr-sm-2" formControlName="private">
+                <option value="true">Privado</option>
+                <option value="false">Público</option>
+            </select>
+            </div>
+        </div>
+
+        <!--Admins-->
+        <div class="form-row mb-3">
+            <div class="col-lg-6">
+                <label>Participantes agreados: <b>{{userParticipants.length}}</b>
+                        </label>
+                <div class="input-group">
+                    <input class="form-control form-control-lg" type="text" placeholder="Participante (nombre, apellido) .." (keydown.enter)="searchUser(buscarUser.value)" #buscarUser>
+                    <div class="input-group-append">
+                        <button (click)="searchUser(buscarUser.value)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+                    </div>
+                </div>
+                <div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loadingSearchingParticipants">
+                    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+                    <br>
+                    <br>
+                    <h3>Cargando .....</h3>
+                </div>
+                <ul class="list-group list-group-flush" *ngIf="!loadingSearchingParticipants">
+                    <div *ngFor="let user of userParticipants">
+                        <li class="list-group-item">
+                            <button class="btn btn-danger" type="button" (click)="removeUserParticipant(user)">
+                                <fa-icon [icon]="['fas', 'minus']" size="lg"></fa-icon>
+                            </button>
+                            <img [src]="user.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 mr-1 ml-1"> {{user.name}} {{user?.last_name}}</li>
+                    </div>
+                </ul>
+                <ul class="list-group list-group-flush" *ngIf="!loadingSearchingParticipants">
+                    <div *ngFor="let user of users">
+                        <li class="list-group-item">
+                            <button class="btn btn-info" type="button" (click)="addUserParticipant(user)">
+                                <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                            </button>
+                            <img [src]="user.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 mr-1 ml-1"> {{user.name}} {{user?.last_name}}</li>
+                    </div>
+                </ul>
+                <div class="alert alert-danger text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="searchUsers && !loadingSearchingParticipants && users.length === 0 && userParticipants.length === 0">
+                    <h5>No se encontraron resultados</h5>
+                    <h6>Intente con otro término de búsqueda</h6>
+                </div>
+
+
+                <div *ngIf="!loading && !loadingSearchingParticipants && searchUsers && (from < totalSearch)" class="text-center font-weight-bold mt-4">
+                    <h5>Resultados: {{totalSearch}}</h5>
+                    <h6>Mostrando: {{users.length + userParticipants.length}} / {{totalSearch}}</h6>
+                    <a class="mt-2 pointer" (click)="searchUser(buscarUser.value, false)">Ver más...</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <label>Administradores agregados: <b>{{userAdmins.length}}</b>
+                        </label>
+                <div class="input-group">
+                    <input class="form-control form-control-lg" type="text" placeholder="Administrador (nombre, apellido) .." (keydown.enter)="searchAdmin(buscarAdmin.value)" #buscarAdmin>
+                    <div class="input-group-append">
+                        <button (click)="searchAdmin(buscarAdmin.value)" class="btn btn-success btn-lg" type="button"><span class="icon-search"></span></button>
+                    </div>
+                </div>
+                <div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loadingSearchingParticipants">
+                    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+                    <br>
+                    <br>
+                    <h3>Cargando .....</h3>
+                </div>
+                <ul class="list-group list-group-flush" *ngIf="!loadingSearchingParticipants">
+                    <div *ngFor="let user of userAdmins">
+                        <li class="list-group-item">
+                            <button class="btn btn-danger" type="button" (click)="removeUserAdmin(user)" *ngIf="user._id !== I._id">
+                                <fa-icon [icon]="['fas', 'minus']" size="lg"></fa-icon>
+                            </button>
+                            <img [src]="user.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 mr-1 ml-1"> {{user.name}} {{user?.last_name}}</li>
+                    </div>
+                </ul>
+                <ul class="list-group list-group-flush" *ngIf="!loadingSearchingParticipants">
+                    <div *ngFor="let user of admins">
+                        <li class="list-group-item">
+                            <button class="btn btn-info" type="button" (click)="addUserAdmin(user)">
+                                <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                            </button>
+                            <img [src]="user.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 mr-1 ml-1"> {{user.name}} {{user?.last_name}}</li>
+                    </div>
+                </ul>
+                <div class="alert alert-danger text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="searchAdmins && !loadingSearchingAdmins && admins.length === 0 && userAdmins.length === 0">
+                    <h5>No se encontraron resultados</h5>
+                    <h6>Intente con otro término de búsqueda</h6>
+                </div>
+
+
+                <div *ngIf="!loading && !loadingSearchingAdmins && searchAdmins && (from < totalSearchAdmins)" class="text-center font-weight-bold mt-4">
+                    <h5>Resultados: {{totalSearchAdmins}}</h5>
+                    <h6>Mostrando: {{admins.length + userAdmins.length}} / {{totalSearchAdmins}}</h6>
+                    <a class="mt-2 pointer" (click)="searchAdmin(buscarUser.value, false)">Ver más...</a>
+                </div>
+            </div>
+        </div>
+
+        <!--Request users-->
+        <div class="form-row mb-3">
+            <div class="col">
+                <label>Usuarios que desean ser agregados: <b>{{joinRequest.length}}</b>
+                        </label>
+                <ul class="list-group list-group-flush">
+                    <div *ngFor="let user of joinRequest">
+                        <li class="list-group-item">
+                            <button class="btn btn-info" type="button" (click)="addParticipant(user)" *ngIf="user._id !== I._id">
+                                <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+                            </button>
+                            <img [src]="user.thumbnail_photography | image : userService.getToken(): 'photographyChat': '../../assets/img/no-img.jpg'" class="img img-fluid width-50 mr-1 ml-1"> {{user.name}} {{user?.last_name}}</li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="form-row mb-3">
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-secondary btn-lg btn-block" [routerLink]="'/profile/foros'">Cancelar</button>
+            </div>
+            <div class="col-lg-6">
+                <button type="submit" class="btn btn-success btn-lg btn-block">Guardar</button>
+            </div>
+        </div>
+    </form>
+
+    <button type="button" *ngIf="!loading && edit" class="btn btn-danger mt-2 border-bottom border-gray mr-2" (click)="deleteForo(foro)">
+        <fa-icon [icon]="['fas', 'trash']" size="lg"></fa-icon> Eliminar foro
+    </button>
+</div>

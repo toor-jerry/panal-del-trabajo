@@ -1,0 +1,109 @@
+<div class="row mb-2 text-center">
+    <div class="col">
+        <button class="btn btn-success btn-lg text-center" (click)="update(menuResponse)">
+            <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+            {{action}}</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-danger btn-lg text-center" [routerLink]="['/profile/manager-menu']">
+            <fa-icon [icon]="['fas', 'times-circle']" size="lg"></fa-icon>
+            Cancelar</button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-info btn-lg text-center" data-toggle="modal" data-target="#exampleModal">
+            <fa-icon [icon]="['fas', 'plus']" size="lg"></fa-icon>
+            Agregar campos</button>
+    </div>
+</div>
+<div *ngIf="edit">
+    <div class="row">
+        <div class="col col-md-9">
+            <div class="alert alert-danger" role="alert" *ngIf="!move">
+                Modo de eliminación de items.
+                <h6 class="text-muted">*Deslice hacía un lado para eliminar el item.</h6>
+            </div>
+            <div class="alert alert-success" role="alert" *ngIf="move">
+                Modo de reorganización de items.
+                <h6 class="text-muted">*Deslice el item en la posición deseada.</h6>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-success btn-lg" *ngIf="move" (click)="move = false">
+                Mover
+            </button>
+            <button class="btn btn-danger btn-lg" *ngIf="!move" (click)="move = true">
+                <fa-icon [icon]="['fas', 'trash-alt']" size="lg"></fa-icon>
+                Eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="list-group animated fadeInLeft content-container w-50 mx-auto" role="tablist" cdkDropList>
+    <div *ngFor="let itemMenu of menu">
+        <a class="list-group-item list-group-item-action cursorMove" name="sidBarItem" cdkDrag (cdkDragDropped)="drop($event)" (click)="editField(itemMenu)" data-toggle="modal" data-target="#exampleModal">
+            <span *ngIf="itemMenu.icon" class="{{itemMenu.icon}} icono-opciones" tabindex="0" data-toggle="tooltip" [title]="itemMenu.title">
+            </span>
+
+            <img *ngIf="itemMenu.img" src="{{ itemMenu.img }}" class="logo-potro mr-0 mr-lg-2 p-0">
+            <label>{{ itemMenu.title }}</label>
+
+            <span *ngIf="itemMenu.notifications" class="badge no_notificaciones animated tada infinite" [ngClass]="itemMenu.classNotif">
+                        'N'
+            </span>
+            <span *ngIf="itemMenu.notificationsMessages" class="badge no_notificaciones animated tada infinite" [ngClass]="itemMenu.classNotif">
+                        'N'
+            </span>
+        </a>
+    </div>
+    <!--Salir-->
+    <a class="list-group-item list-group-item-action cursorMove" name="sidBarItem" cdkDrag>
+
+        <span class="icon-exit icono-opciones"></span>
+        <label>Salir</label>
+    </a>
+</div>
+
+
+
+
+<div class="modal fade background-modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div class="modal-body">
+                <form ngNativeValidate [formGroup]="menuForm" (ngSubmit)="addItem()">
+
+                    <input class="form-control form-control-lg mb-2" type="text" placeholder="Titulo" formControlName="title" required>
+                    <input class="form-control form-control-lg mb-2" type="text" placeholder="Icono" formControlName="icon">
+                    <input class="form-control form-control-lg mb-2" type="text" placeholder="Imágen (url)" formControlName="img">
+                    <input class="form-control form-control-lg mb-2" type="text" placeholder="Ruta (ex: home)" formControlName="ruta">
+
+                    <div class="form-group mb-2">
+                        <label>¿Mostrará notificaciones?</label>
+                        <select class="custom-select" multiple formControlName="notifications">
+                            <option value="false" [selected]="(itemEdit?.notifications) ? false : true">No</option>
+                            <option value="true" [selected]="(itemEdit?.notifications) ? true : false">Si</option>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Mostrará notificaciones de mensajes?</label>
+                        <select class="custom-select" multiple formControlName="notificationsMessages">
+                            <option value="false" [selected]="(itemEdit?.notificationsMessages) ? false : true">No</option>
+                            <option value="true" [selected]="(itemEdit?.notificationsMessages) ? true : false">Si</option>
+                            </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" (click)="addItem()">Agregar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,40 @@
+<div class="card-deck">
+    <div class="card animated fadeInLeft">
+        <div class="card-body">
+            <div class="text-center">
+                <img src="../../assets/img/perfil-premium.png" class="iconos">
+            </div>
+            <h5 class="card-title">Perfil Premium</h5>
+            <p class="card-text text-justify">Tenga acceso a un blog personal, postule su perfil como sobresaliente a organizaciones, empresas, negocios y más que requieran sus servicios, mensajee de manera directa con otros usuarios dentro de la seguridad de la aplicación, obtenga soporte
+                técnico y asesorías todo el año, configuración y personalización de su perfil, reciba notificaciones de bolsa de trabajo de manera automática.</p>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-info btn-lg btn-block" [routerLink]="['premium']">Seleccionar</button>
+        </div>
+    </div>
+
+    <div class="card animated fadeInUp">
+        <div class="card-body">
+            <div class="text-center">
+                <img src="../../assets/img/perfil-platino.png" class="iconos">
+            </div>
+            <h5 class="card-title">Perfil Platino</h5>
+            <p class="card-text text-justify">Obtenga los beneficios del 'Perfil Premium' además cree o únase a foros y grupos de su interés, acceso a servicios exclusivos de la aplicación, entre muchos otros!!</p>
+        </div>
+        <div class="card-footer">
+            <button [routerLink]="['platino']" type="button" class="btn btn-warning btn-lg btn-block text-white">Seleccionar</button>
+        </div>
+    </div>
+    <div class="card animated fadeInRight">
+        <div class="card-body">
+            <div class="rounded p-2 text-center">
+                <span class="icon-office iconos-icon"></span>
+            </div>
+            <h5 class="card-title">Perfil Enterprise</h5>
+            <p class="card-text text-justify">Postule sus vacantes, obtenga las postulaciones a su vacante y notificaciones en tiempo real, chatee con los aspirantes, revise sus CV y, mucho más.</p>
+        </div>
+        <div class="card-footer">
+            <button [routerLink]="['enterprise']" type="button" class="btn btn-success btn-lg btn-block text-white">Seleccionar</button>
+        </div>
+    </div>
+</div>

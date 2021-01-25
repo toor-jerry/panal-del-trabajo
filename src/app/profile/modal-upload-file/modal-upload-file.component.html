@@ -1,0 +1,28 @@
+<div class="background-modal animated fadeIn" [ngClass]="modalUploadFileService.hide">
+    <div class="modal show-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Subir archivo</h5>
+                    <button type="button" (click)="hideModal()" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                </div>
+                <div class="modal-body" align="center">
+                    <h3 *ngIf="fileUpload"> {{fileUpload.name}} </h3>
+                    <h3 *ngIf="!fileUpload">Ningún archivo seleccionado.</h3>
+
+                    <div class="custom-file mt-2 mb-2">
+                        <input type="file" class="custom-file-input" lang="es" (change)="fileSelected( $event.target.files[0] )">
+                        <label class="custom-file-label text-primary font-weight-bold">Seleccionar archivo</label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="uploadFile()" [disabled]="!fileUpload" class="btn btn-primary">Subir archivo</button>
+                    <button type="button" (click)="hideModal()" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

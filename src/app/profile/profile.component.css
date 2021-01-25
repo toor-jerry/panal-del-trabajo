@@ -1,0 +1,8 @@
+@media screen and (min-width: 991px) {
+    .margenes-sidebar {
+        padding-right: 0px;
+    }
+    .margenes-container {
+        padding-left: 0px;
+    }
+}

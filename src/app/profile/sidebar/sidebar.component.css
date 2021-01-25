@@ -1,0 +1,58 @@
+.overflow-menu {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+@media screen and (max-width: 991px) {
+    label {
+        display: none;
+    }
+    .my-list-group-horizontal {
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    .ocultar {
+        display: none;
+    }
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.ocultar {
+    cursor: pointer;
+}
+
+.icono-opciones-trash {
+    font-size: 25px;
+    color: red;
+    margin-right: 10px;
+}
+
+.icono-opciones-move {
+    font-size: 16px;
+    color: green;
+}
+
+.no_notificaciones {
+    font-size: 18px;
+    float: right;
+}
+
+.salir {
+    font-size: 30px;
+    color: red;
+}
+
+.logo-potro {
+    width: 31px;
+}
+
+.content-container {
+    max-width: 300px;
+}
+
+ul {
+    list-style: none;
+}

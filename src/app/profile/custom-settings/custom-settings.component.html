@@ -1,0 +1,114 @@
+<h6 class="font-weight-bold">Temas prediseñados <span class="icon-paint-format text-success icono"></span></h6>
+<hr>
+<div class="row mb-4">
+    <div class="col mb-2" *ngFor="let theme of colors">
+        <span id="{{theme}}IconCheck" (click)="changeTheme(theme)" *ngIf="theme !== themeDefaultSelected" class="icon-checkbox-unchecked border border-secondary bg-{{ theme }} text-{{ theme }} rounded pointer theme-icon"></span>
+        <span id="{{theme}}IconCheck" (click)="changeTheme(theme)" *ngIf="theme === themeDefaultSelected" class="icon-checkmark2 border border-secondary bg-{{ theme }} rounded pointer theme-icon"></span>
+    </div>
+</div>
+
+<h6 class="font-weight-bold">Temas personalizados <span class="icon-eyedropper text-info icono"></span></h6>
+<hr>
+<div class="row">
+    <div class="col col-md-3 text-center mb-3">
+        <div class="card">
+            <p>Barra de navegación</p>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Elegir tema
+                </button>
+                <span *ngIf="customTheme.navbarBg && customTheme.custom" class="icon-checkbox-unchecked border border-secondary bg-{{ customTheme.navbarBg }} text-{{ customTheme.navbarBg }} rounded pointer theme-icon"></span>
+                <div class="dropdown-menu">
+                    <div *ngFor="let color of colors">
+                        <a class="dropdown-item bg-{{color}}" (click)="changeThemeNavbar(color)">{{ color }}</a>
+                    </div>
+                    <a class="dropdown-item bg-transparent" (click)="changeThemeNavbar('trasparent')">trasparent</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col col-md-3 text-center mb-3">
+        <div class="card">
+            <p>Estilo barra de navegación</p>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Elegir estilo
+            </button>
+                <span *ngIf="customTheme.navbar && customTheme.custom" class="icon-checkbox-unchecked border border-secondary bg-{{ customTheme.navbar }} text-{{ customTheme.navbar }} rounded pointer theme-icon"></span>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item bg-dark" (click)="changeStyleThemeNavbar('dark')">Dark</a>
+                    <a class="dropdown-item bg-light" (click)="changeStyleThemeNavbar('light')">Light</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-md-3 text-center mb-3">
+        <div class="card">
+            <p>Menú lateral</p>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Elegir tema
+                </button>
+                <span *ngIf="customTheme.sidebar && customTheme.custom" class="icon-checkbox-unchecked border border-secondary bg-{{ customTheme.sidebar }} text-{{ customTheme.sidebar }} rounded pointer theme-icon"></span>
+                <div class="dropdown-menu">
+                    <div *ngFor="let color of colors">
+                        <a class="dropdown-item bg-{{color}}" (click)="changeThemeSidebar(color)">{{ color }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-md-3 text-center mb-3">
+        <div class="card">
+            <p>Área de trabajo</p>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Elegir tema
+                </button>
+                <span *ngIf="customTheme.workArea && customTheme.custom" class="icon-checkbox-unchecked border border-secondary bg-{{ customTheme.workArea }} text-{{ customTheme.workArea }} rounded pointer theme-icon"></span>
+                <div class="dropdown-menu">
+                    <div *ngFor="let color of colors">
+                        <a class="dropdown-item bg-{{color}}" (click)="changeWorkArea(color)">{{ color }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-md-3 text-center mb-3">
+        <div class="card">
+            <p>Fondo</p>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Elegir tema
+                </button>
+                <span *ngIf="customTheme.bg && customTheme.custom" class="icon-checkbox-unchecked border border-secondary bg-{{ customTheme.bg }} text-{{ customTheme.bg }} rounded pointer theme-icon"></span>
+                <div class="dropdown-menu">
+                    <div *ngFor="let color of colors">
+                        <a class="dropdown-item bg-{{color}}" (click)="changeBody(color)">{{ color }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-md-3 text-center mb-3">
+        <div class="card">
+            <p>Breadcrumb</p>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Elegir tema
+                </button>
+                <span *ngIf="customTheme.breadCrumb && customTheme.custom" class="icon-checkbox-unchecked border border-secondary bg-{{ customTheme.breadCrumb }} text-{{ customTheme.breadCrumb }} rounded pointer theme-icon"></span>
+                <div class="dropdown-menu">
+                    <div *ngFor="let color of colors">
+                        <a class="dropdown-item bg-{{color}}" (click)="changeBreAdcrumb(color)">{{ color }}</a>
+                    </div>
+                    <a class="dropdown-item bg-custom-gray text-body" (click)="changeBreAdcrumb('custom-gray')">Gray</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

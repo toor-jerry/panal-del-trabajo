@@ -1,0 +1,33 @@
+.iconos-bar {
+    font-size: 40px;
+}
+
+.habilitar-opciones {
+    display: none;
+}
+
+.desabilitar-opciones {
+    display: inline;
+}
+
+@media screen and (max-width: 991px) {
+    .habilitar-opciones {
+        display: inline;
+    }
+    .desabilitar-opciones {
+        display: none;
+    }
+}
+
+.logo-potro {
+    width: 31px;
+}
+
+.no_notificaciones {
+    font-size: 18px;
+    float: right;
+}
+
+.menu-popup {
+    min-width: 300%;
+}

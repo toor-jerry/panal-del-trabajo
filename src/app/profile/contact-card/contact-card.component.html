@@ -1,0 +1,15 @@
+<div class="card animated fadeIn fast p-2 border-0 m-2">
+    <img src="{{ user.photography | image : userService.getToken(): 'photography': '../../assets/img/no-img.jpg' }}" class="card-img-top fotografia mx-auto" alt="{{ user.name  }} {{ user.last_name  }}">
+    <div class="card-body">
+        <h5 class="card-title font-weight-bold">{{ user.name }} {{ user.last_name }}</h5>
+        <h6>{{user.email}}</h6>
+        <button (click)="getUser()" type="button" class="btn btn-warning btn-block">
+            <fa-icon [icon]="['fas', 'eye']" size="lg"></fa-icon>
+            Ver contacto
+        </button>
+        <button (click)="deleteContact(user)" type="button" class="btn btn-danger btn-block">
+            <fa-icon [icon]="['fas', 'trash']" size="lg"></fa-icon>
+            Eliminar contacto
+        </button>
+    </div>
+</div>

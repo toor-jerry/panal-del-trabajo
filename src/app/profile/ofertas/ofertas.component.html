@@ -1,0 +1,30 @@
+<div class="alert alert-info text-center p-4 rounded rounded-lg animated bounceIn" role="alert" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" size="5x" [pulse]="true"></fa-icon>
+    <br>
+    <br>
+    <h3>Cargando .....</h3>
+</div>
+
+
+<div *ngIf="!loading">
+    <h3 class="animated rotateInDownLeft">Ofertas: {{offers.length}} / <b>{{total > 0 ? total : ''}}</b> &nbsp; <span class="icon-fire icon-fire-style"></span></h3>
+    <hr>
+
+    <div *ngFor="let offer of offers; let i = index">
+        <div class="row pl-3 pr-3 animated fadeInRight">
+            <div class="col-1">
+                <span class="icon-checkmark"></span>
+            </div>
+            <div class="col border-bottom border-gray">
+                <strong class="text-gray-dark">{{offer.title}}</strong>
+                <br>
+                <label class="text-muted">{{offer.duration | date:'medium'}}</label>
+            </div>
+            <a class="float-right mt-2 border-bottom border-gray pointer" (click)="show(offer._id)">Ver oferta</a>
+        </div>
+    </div>
+
+    <div *ngIf="from < total" class="text-center font-weight-bold mt-4">
+        <a class="mt-2 pointer" (click)="showMore()">Ver más...</a>
+    </div>
+</div>
